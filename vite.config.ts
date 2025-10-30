@@ -15,7 +15,7 @@ export default defineConfig({
   plugins: [
     svelte({
       compilerOptions: {
-        dev: true,
+        dev: false,
       },
     }),
     crx({ manifest }),
