@@ -1,0 +1,97 @@
+:root {
+  /* Colors HERE! */
+  --d-ui-color-core-alpha: #000000;
+  --d-ui-color-core-beta: #1a1e21;
+  --d-ui-color-core-charlie: #30383d;
+  --d-ui-color-core-delta: #96a2ad;
+  --d-ui-color-core-echo: #ffffff;
+  --d-ui-color-theme: #f8ae2c;
+  --d-ui-color-theme-danger: #f3194d;
+  --d-ui-color-theme-success: #22c55e;
+
+  /* Fonts HERE! */
+  --d-ui-font-gameplay: "IBMPlexSansGameplay";
+  --d-ui-font-interface: "IBMPlexSans";
+  --d-ui-font-title: "IBMPlexSerif";
+
+  /* Font Sizes HERE! */
+  --d-ui-font-size-tiny: 10px;
+  --d-ui-font-size-small: 12px;
+  --d-ui-font-size-medium: 14px;
+  --d-ui-font-size-large: 16px;
+  --d-ui-font-size-huge: 20px;
+  --d-ui-font-size-giga: 24px;
+
+  /* Icon Sizes HERE! */
+  --d-ui-icon-size-medium: 16px;
+  --d-ui-icon-size-large: 20px;
+  --d-ui-icon-size-giga: 32px;
+
+  /* Gaps HERE! */
+  --d-ui-gap-tiny: 4px;
+  --d-ui-gap-small: 8px;
+  --d-ui-gap-medium: 16px;
+  --d-ui-gap-large: 24px;
+  --d-ui-gap-huge: 32px;
+  --d-ui-gap-giga: 48px;
+
+  /* Padding HERE! */
+  --d-ui-padding-tiny: 4px;
+  --d-ui-padding-small: 8px;
+  --d-ui-padding-medium: 16px;
+  --d-ui-padding-large: 24px;
+  --d-ui-padding-huge: 32px;
+  --d-ui-padding-giga: 48px;
+
+  /* Border Radius HERE! */
+  --d-ui-border-radius-tiny: 4px;
+  --d-ui-border-radius-small: 6px;
+  --d-ui-border-radius-medium: 8px;
+  --d-ui-border-radius-large: 12px;
+  --d-ui-border-radius-huge: 16px;
+  --d-ui-border-radius-giga: 24px;
+  --d-ui-border-radius-full: 50%;
+
+  /* Sizes HERE! */
+  --d-ui-size-tiny: 16px;
+  --d-ui-size-small: 24px;
+  --d-ui-size-medium: 32px;
+  --d-ui-size-large: 48px;
+  --d-ui-size-huge: 64px;
+  --d-ui-size-giga: 96px;
+
+  /* Animation Durations HERE! */
+  --d-ui-animation-duration-slow: 500ms;
+  --d-ui-animation-duration-medium: 250ms;
+  --d-ui-animation-duration-fast: 150ms;
+
+  /* Animation Easing HERE! */
+  --d-ui-animation-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --d-ui-animation-ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --d-ui-animation-ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --d-ui-animation-ease-linear: cubic-bezier(0, 0, 1, 1);
+
+  /* Aspect Ratios */
+  --d-ui-aspect-ratio-square: 1 / 1;
+  --d-ui-aspect-ratio-portrait: 2 / 3;
+  --d-ui-aspect-ratio-card: 3 / 4;
+}
+
+.dungeon-ui-icon {
+  font-family: "Material Symbols Rounded";
+  font-weight: normal;
+  font-style: normal;
+  font-size: var(--d-ui-icon-size-medium);
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
+
+  /* Enable this line if the icons need to be filled again. */
+  /* font-variation-settings: "FILL" 1; */
+}
