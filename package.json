@@ -1,5 +1,5 @@
 {
-  "name": "Dungeon UI",
+  "name": "dungeon-ui",
   "type": "module",
   "version": "1.0.0",
   "private": true,
@@ -7,17 +7,18 @@
     "dev": "vite",
     "build": "vite build"
   },
-  "dependencies": {
-    "svelte": "^5.36.12"
-  },
   "devDependencies": {
-    "@crxjs/vite-plugin": "^2.0.3",
-    "@sveltejs/vite-plugin-svelte": "^6.1.0",
-    "@tsconfig/svelte": "^5.0.4",
-    "@types/chrome": "^0.1.1",
-    "sass-embedded": "^1.93.2",
-    "typescript": "~5.8.3",
-    "vite": "^7.0.5",
-    "vite-plugin-zip-pack": "^1.2.4"
+    "@crxjs/vite-plugin": "^2.2.1",
+    "@sveltejs/vite-plugin-svelte": "^6.2.1",
+    "@tsconfig/svelte": "^5.0.5",
+    "@types/node": "^24.10.0",
+    "sass": "^1.93.3",
+    "svelte-preprocess": "^6.0.3",
+    "typescript": "^5.9.3",
+    "vite": "^7.2.2"
+  },
+  "dependencies": {
+    "@types/chrome": "^0.1.27",
+    "svelte": "^5.43.4"
   }
 }

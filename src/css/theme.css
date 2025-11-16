@@ -1,0 +1,73 @@
+:root {
+  /* Colors HERE! */
+  --dui-color-orange: #f8ae2c;
+  --dui-color-red: #f3194d;
+  --dui-color-green: #22c55e;
+  --dui-color-blue: #317dea;
+  --dui-color-basic-alpha: #000000;
+  --dui-color-basic-bravo: #1a1e21;
+  --dui-color-basic-charlie: #30383d;
+  --dui-color-basic-delta: #828b94;
+  --dui-color-basic-echo: #ffffff;
+
+  /* Fonts HERE! */
+  --dui-font-size-medium: 12px;
+  --dui-font-size-medium-large: 14px;
+  --dui-font-size-large-small: 16px;
+  --dui-font-size-large: 32px;
+  --dui-font-size-huge: 64px;
+  --dui-font-family-title: "IBMPlexSerif";
+  --dui-font-family-interface: "IBMPlexSans";
+  --dui-font-family-gameplay: "IBMPlexSansGameplay";
+  --dui-font-family-icons: "VoyageIcons";
+
+  /* Animations HERE! */
+  --dui-animation-duration-fast: 150ms;
+  --dui-animation-duration-medium: 250ms;
+  --dui-animation-duration-slow: 500ms;
+
+  /* Sizes HERE! */
+  --dui-size-large: 48px;
+
+  /* Gaps HERE! */
+  --dui-gap-tiny: 4px;
+  --dui-gap-small: 8px;
+  --dui-gap-medium: 16px;
+  --dui-gap-large: 24px;
+  --dui-gap-huge: 32px;
+  --dui-gap-giga: 48px;
+
+  /* Padding HERE! */
+  --dui-padding-tiny: 4px;
+  --dui-padding-small: 8px;
+  --dui-padding-medium: 16px;
+  --dui-padding-large: 24px;
+  --dui-padding-huge: 32px;
+  --dui-padding-giga: 48px;
+
+  /* Border radii (?) HERE! */
+  --dui-border-radius-tiny: 4px;
+  --dui-border-radius-small: 6px;
+  --dui-border-radius-medium: 8px;
+  --dui-border-radius-large: 12px;
+  --dui-border-radius-huge: 16px;
+  --dui-border-radius-giga: 24px;
+  --dui-border-radius-full: 50%;
+}
+
+.dui-icon {
+  font-family: var(--dui-font-family-icons);
+  margin-top: 4px;
+}
+
+.dui-attention {
+  box-shadow: 0 0 0 1.5px transparent;
+}
+
+.dui-attention:hover {
+  box-shadow: 0 0 0 1.5px var(--dui-color-basic-charlie);
+}
+
+.dui-attention:focus {
+  box-shadow: 0 0 0 1.5px var(--dui-color-orange);
+}

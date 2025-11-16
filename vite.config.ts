@@ -1,29 +1,21 @@
-import path from "node:path";
-import { crx } from "@crxjs/vite-plugin";
-import { svelte } from "@sveltejs/vite-plugin-svelte";
 import { defineConfig } from "vite";
-import zip from "vite-plugin-zip-pack";
-import manifest from "./manifest.config";
-import { name, version } from "./package.json";
+import { svelte } from "@sveltejs/vite-plugin-svelte";
+import { crx } from "@crxjs/vite-plugin";
+import manifest from "./manifest.json";
+import path from "path";
 
 export default defineConfig({
-  resolve: {
-    alias: {
-      "@": `${path.resolve(__dirname, "src")}`,
-    },
-  },
   plugins: [
     svelte({
       compilerOptions: {
-        dev: false,
+        dev: true,
       },
     }),
     crx({ manifest }),
-    zip({ outDir: "release", outFileName: `crx-${name}-${version}.zip` }),
   ],
-  server: {
-    cors: {
-      origin: [/chrome-extension:\/\//],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "src"),
     },
   },
 });

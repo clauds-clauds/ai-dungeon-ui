@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "DungeonUI",
+  "version": "1.0.0",
+  "permissions": ["storage", "unlimitedStorage"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/controls/events.ts"]
+    }
+  ]
+}
