@@ -5,7 +5,12 @@
   "permissions": ["storage", "unlimitedStorage"],
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
+      "matches": [
+        "https://play.aidungeon.com/*",
+        "https://beta.aidungeon.com/*",
+        "https://alpha.aidungeon.com/*",
+        "http://localhost:5173/@crx/client-worker"
+      ],
       "js": ["src/controls/events.ts"]
     }
   ]

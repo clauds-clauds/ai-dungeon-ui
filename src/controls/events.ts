@@ -16,7 +16,8 @@ class DUIEvents {
 
   static async onStart(): Promise<void> {
     // Log something awfully generic.
-    Logger.info("Start-up is doing stuff...");
+    Logger.info("Activating...");
+    Logger.info(`Detected environment: ${Utils.getEnvironment()}`);
 
     // Do the storage stuff.
     await Storage.load();

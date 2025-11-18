@@ -38,11 +38,14 @@ export class DUIDom {
 
     // Log some stuff.
     Logger.info("Mounting pretty response...");
-    Logger.info("Action: " + isAction);
-    Logger.info("Last: " + isLast);
+    Logger.info("Is this an action? " + isAction);
+    Logger.info("Is this the latest response? " + isLast);
 
     // Mount it.
     mount(PrettyResponse, { target: response, props: { text, isAction, isLast } });
+
+    // Log some more...
+    Logger.success("Mounted a pretty response!");
   }
 
   static transformResponses(responses: HTMLElement[]) {

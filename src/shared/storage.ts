@@ -59,8 +59,6 @@ export class DUIStorage {
     const newMap: Record<string, PrettyCard> = {};
 
     for (const card of Object.values(cards)) {
-      if (card.name) newMap[card.name.toLowerCase().trim()] = card;
-
       if (card.triggers) {
         const triggers = card.triggers.split(",").map((t) => t.trim().toLowerCase());
         for (const trigger of triggers) {
@@ -78,7 +76,13 @@ export class DUIStorage {
   /* Pretty story card stuff HERE! */
   static syncCard(cachedName: string, latestName: string, type: string = "Class") {
     // Log something.
-    Logger.info("Syncing card data...");
+    Logger.info("Synchronizing card data...");
+
+    // Skip this thing if the latest name is N/A.
+    if (latestName === "N/A") {
+      Logger.error("Tried to save invalid card, discarding...");
+      return;
+    }
 
     // Grab all the cards.
     const cards = get(this.cards);

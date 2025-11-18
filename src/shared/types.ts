@@ -17,5 +17,7 @@ export type PrettyCard = {
   borderStyle: string;
 
   icons: string[];
+  currentIcon: number;
   graphics: string[];
+  currentGraphic: number;
 };

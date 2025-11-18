@@ -12,6 +12,14 @@ export class DUIUtils {
     return match ? match[1] : "N/A";
   }
 
+  static getEnvironment(): string {
+    const host = window.location.hostname;
+    if (host.startsWith("play.")) return "production";
+    if (host.startsWith("beta.")) return "beta";
+    if (host.startsWith("alpha.")) return "alpha";
+    return "N/A";
+  }
+
   static travelUp(element: HTMLElement, level: number) {
     let currentElement = element;
 
@@ -24,6 +32,12 @@ export class DUIUtils {
   }
 
   /* File stuff HERE! */
+
+  static wrapIndexData(data: string[], currentIndex: number) {
+    if (!data || data.length === 0) return "";
+    const index = Math.max(0, Math.min(currentIndex ?? 0, data.length - 1));
+    return data[index];
+  }
 
   static async requestFile(fileType: string): Promise<File | null> {
     return new Promise((resolve) => {
