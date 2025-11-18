@@ -53,6 +53,9 @@
   --dui-border-radius-huge: 16px;
   --dui-border-radius-giga: 24px;
   --dui-border-radius-full: 50%;
+
+  /* Aspect Ratio Stuff HERE! */
+  --dui-aspect-ratio-square: 1/1;
 }
 
 .dui-icon {

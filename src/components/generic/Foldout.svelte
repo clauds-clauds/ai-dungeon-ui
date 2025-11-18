@@ -99,8 +99,8 @@
   }
 
   .dui-arrow {
-    font-size: 24px;
-    transition: transform var(--dui-animation-duration-medium) var(--dui-animation-ease-in-out);
+    font-size: 16px;
+    transition: transform var(--dui-animation-duration-fast) ease-in-out;
 
     &.expanded {
       transform: rotate(90deg);

@@ -1,20 +1,14 @@
-<!-- Image scripting HERE! -->
 <script lang="ts">
-  // Imports HERE!
   import type { GenericComponent } from "@/shared/types";
 
-  // Interface HERE!
   interface Image extends GenericComponent {
     src?: string;
     placeholder?: boolean;
     onclick?: () => void;
   }
-
-  // Props HERE!
   let { src, placeholder, onclick }: Image = $props();
 </script>
 
-<!-- Image layout HERE! -->
 <button class="dui-button" class:placeholder {onclick}>
   {#if src}
     <img {src} alt="" class="dui-image" />
@@ -22,7 +16,6 @@
   <span class="dui-icon">{placeholder ? "w_add" : "w_trash"}</span>
 </button>
 
-<!-- Image styling HERE! -->
 <style lang="scss">
   .dui-button {
     position: relative;

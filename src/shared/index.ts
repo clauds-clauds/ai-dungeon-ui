@@ -13,6 +13,7 @@ export { default as Image } from "../components/generic/Image.svelte";
 export { default as Row } from "../components/generic/Row.svelte";
 export { default as Select } from "../components/generic/Select.svelte";
 export { default as Text } from "../components/generic/Text.svelte";
+export { default as Switch } from "../components/generic/Switch.svelte";
 
 // Pretties HERE!
 export { default as PrettyEditor } from "../components/pretty/PrettyEditor.svelte";

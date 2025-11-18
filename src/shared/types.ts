@@ -2,6 +2,7 @@ export interface GenericComponent {
   icon?: string;
   label?: string;
   children?: any;
+  lighter?: boolean;
 }
 
 export type PrettyCard = {
@@ -10,11 +11,11 @@ export type PrettyCard = {
   type: string;
   triggers: string;
 
-  customization: string;
   highlight: string;
   textColor: string;
   borderColor: string;
   borderStyle: string;
+  colorStyle: string;
 
   icons: string[];
   currentIcon: number;

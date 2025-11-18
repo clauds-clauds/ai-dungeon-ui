@@ -1,20 +1,14 @@
-<!-- Gallery scripting HERE! -->
 <script lang="ts">
-  // Imports HERE!
   import type { GenericComponent } from "@/shared/types";
   import Image from "./Image.svelte";
   import { Utils } from "@/shared";
 
-  // Interface HERE!
   interface Gallery extends GenericComponent {
     data: string[];
   }
-
-  // Props HERE!
   let { data = $bindable() }: Gallery = $props();
 </script>
 
-<!-- Gallery layout HERE! -->
 <div class="dui-gallery">
   <div class="dui-grid">
     <Image
@@ -37,7 +31,6 @@
   </div>
 </div>
 
-<!-- Gallery styling HERE! -->
 <style lang="scss">
   .dui-gallery {
     padding: var(--dui-padding-medium);

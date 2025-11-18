@@ -1,6 +1,8 @@
 <script lang="ts">
   import { Utils } from "@/shared";
+  import { DUIStorage } from "@/shared/storage";
   import type { PrettyCard } from "@/shared/types";
+  import { get } from "svelte/store";
 
   interface PrettyHighlight {
     card: PrettyCard;
@@ -22,7 +24,7 @@
   });
 
   let color = $derived.by(() => {
-    return card.textColor;
+    return get(DUIStorage.settings).globalColor;
   });
 </script>
 

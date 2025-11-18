@@ -5,6 +5,7 @@ import type { PrettyCard } from "./types";
 // Default settings HERE!
 const prettySettings = {
   enabled: true,
+  globalColor: "#f11a4c",
 };
 
 // Export those things...
