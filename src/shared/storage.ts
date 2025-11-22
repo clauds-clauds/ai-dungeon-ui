@@ -5,13 +5,18 @@ import type { PrettyCard } from "./types";
 // Default settings HERE!
 const prettySettings = {
   enabled: true,
+
   globalColor: "#f11a4c",
   borderColor: "#f11a4c",
 
   iconSize: 28,
   iconRoundness: 0,
+
   borderWidth: 1,
   borderOpacity: 100,
+
+  tooltipMaxWidth: 512,
+  tooltipMaxHeight: 512,
 };
 
 // Export those things...

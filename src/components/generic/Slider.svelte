@@ -65,6 +65,7 @@
     width: 20px;
     border-radius: var(--dui-border-radius-full);
     transition: transform var(--dui-animation-duration-fast) ease-in-out;
+    transform: scale(1.35);
   }
 
   input[type="range"]::-moz-range-thumb {
@@ -74,14 +75,15 @@
     border-radius: var(--dui-border-radius-full);
     border: none;
     transition: transform var(--dui-animation-duration-fast) ease-in-out;
+    transform: scale(1.35);
   }
 
   input[type="range"]:active::-webkit-slider-thumb {
-    transform: scale(1.35);
+    transform: scale(1.5);
   }
 
   input[type="range"]:active::-moz-range-thumb {
-    transform: scale(1.35);
+    transform: scale(1.5);
   }
 
   input[type="range"]::-webkit-slider-runnable-track {

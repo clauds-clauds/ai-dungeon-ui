@@ -17,18 +17,35 @@
   let timeoutId: ReturnType<typeof setTimeout> | undefined;
 
   // Stuff...
-  let graphic = $derived.by(() => {
+  let data = $derived.by(() => {
     const _ = $cards; // This is disgusting, but ensures that the graphics update when the cards themselves change.
-    return Utils.wrapIndexData(card.graphics, card.currentGraphic);
-  });
 
-  let icon = $derived.by(() => {
-    const _ = $cards;
-    return Utils.wrapIndexData(card.icons, card.currentIcon);
-  });
+    const settings = get(DUIStorage.settings);
 
-  let color = $derived.by(() => {
-    return get(DUIStorage.settings).globalColor;
+    const currentGraphic = Utils.wrapIndexData(card.graphics, card.currentGraphic);
+    const currentIcon = Utils.wrapIndexData(card.icons, card.currentIcon);
+    const currentIconSize = settings.iconSize;
+
+    const currentColor = settings.globalColor;
+
+    const currentBorderWidth = settings.borderWidth;
+    const currentBorderStyle = card.borderStyle;
+    const currentBorderRadius = settings.iconRoundness / 2;
+
+    const currentTooltipWidth = settings.tooltipMaxWidth;
+    const currentTooltipHeight = settings.tooltipMaxHeight;
+
+    return {
+      graphic: currentGraphic,
+      icon: currentIcon,
+      iconSize: currentIconSize,
+      color: currentColor,
+      borderStyle: currentBorderStyle,
+      borderWidth: currentBorderWidth,
+      borderRadius: currentBorderRadius,
+      tooltipWidth: currentTooltipWidth,
+      tooltipHeight: currentTooltipHeight,
+    };
   });
 
   // Even more stuff!!!
@@ -44,8 +61,8 @@
   }
 </script>
 
-<span class="dui-highlight" style:color role="tooltip" onmouseenter={onEnter} onmouseleave={onLeave}>
-  {#if graphic && hovering}
+<span class="dui-highlight" style:color={data.color} role="tooltip" onmouseenter={onEnter} onmouseleave={onLeave}>
+  {#if data.graphic && hovering}
     <button
       class="dui-highlight-graphic"
       transition:fly={{ y: -32, duration: 300, easing: circOut, opacity: 0 }}
@@ -57,11 +74,18 @@
         DUIStorage.upsertCard(card);
       }}
     >
-      <img src={graphic} alt="" />
+      <img src={data.graphic} style:max-width={`${data.tooltipWidth}px`} style:max-height={`${data.tooltipHeight}px`} alt="" />
     </button>
   {/if}
-  {#if icon}
-    <img src={icon} alt={card.name} class="dui-highlight-icon" />
+  {#if data.icon}
+    <img
+      src={data.icon}
+      alt={card.name}
+      class="dui-highlight-icon"
+      style:width={`${data.iconSize}px`}
+      style:border-radius={`${data.borderRadius}%`}
+      style:border={`${data.borderWidth}px ${data.borderStyle} red`}
+    />
   {/if}
   {#if hovering && card.icons.length > 1}
     <div
@@ -104,7 +128,6 @@
     object-fit: cover;
     border: 1px solid #1b1f22;
     align-self: center;
-    width: 32px;
   }
 
   .dui-highlight-graphic {

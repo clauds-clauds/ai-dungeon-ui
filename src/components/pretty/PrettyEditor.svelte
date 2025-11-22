@@ -35,10 +35,10 @@
 {#if $cards[editorState.name]}
   <div id={Config.ID_PRETTY_EDITOR} class="dui-editor">
     <Field label="Pretty Stuff">
-      <Select choices={["Hide", "Customize", "Configure"]} bind:value={choice} />
+      <Select choices={["Hide", "Customize (Card)", "Configure (Shared)"]} bind:value={choice} />
     </Field>
 
-    {#if choice === "Customize"}
+    {#if choice === "Customize (Card)"}
       <Field label="TRIGGERS (ART)">
         <Text placeholder="Enter some comma separated art triggers." bind:value={$cards[editorState.name].triggers} />
       </Field>
@@ -76,9 +76,9 @@
       {/if}
     {/if}
 
-    {#if choice === "Configure"}
+    {#if choice === "Configure (Shared)"}
       <Field label="Art">
-        <Foldout icon="w_image" label="Icons & Graphics">
+        <Foldout icon="w_filter" label="Sliders">
           <Row>
             <Field label="Icon Size (pixels)">
               <Slider min={8} max={40} bind:value={$settings.iconSize} />
@@ -96,6 +96,16 @@
 
             <Field label="Border Opacity (%)">
               <Slider bind:value={$settings.borderOpacity} />
+            </Field>
+          </Row>
+
+          <Row>
+            <Field label="Tooltip Max Width">
+              <Slider min={0} max={1024} step={32} bind:value={$settings.tooltipMaxWidth} />
+            </Field>
+
+            <Field label="Tooltip Max Height">
+              <Slider min={0} max={1024} step={32} bind:value={$settings.tooltipMaxHeight} />
             </Field>
           </Row>
         </Foldout>
