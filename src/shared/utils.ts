@@ -5,8 +5,6 @@ export class DUIUtils {
     return chrome.runtime.getManifest().version;
   }
 
-  /* DOM stuff HERE! */
-
   static getAdventureId(): string {
     const match = window.location.pathname.match(/adventure\/([^\/]+)/);
     return match ? match[1] : "N/A";
@@ -31,7 +29,9 @@ export class DUIUtils {
     return currentElement;
   }
 
-  /* File stuff HERE! */
+  static clamp(num: number, min: number, max: number): number {
+    return Math.min(Math.max(num, min), max);
+  }
 
   static wrapIndexData(data: string[], currentIndex: number) {
     if (!data || data.length === 0) return "";

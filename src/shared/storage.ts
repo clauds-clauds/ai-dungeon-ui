@@ -6,6 +6,12 @@ import type { PrettyCard } from "./types";
 const prettySettings = {
   enabled: true,
   globalColor: "#f11a4c",
+  borderColor: "#f11a4c",
+
+  iconSize: 28,
+  iconRoundness: 0,
+  borderWidth: 1,
+  borderOpacity: 100,
 };
 
 // Export those things...
@@ -24,7 +30,7 @@ export class DUIStorage {
 
       // Load the settings if found.
       if (result.settings) {
-        this.settings.set({ ...prettySettings, ...result.prettySettings });
+        this.settings.set({ ...prettySettings, ...result.settings });
       }
 
       // Load the cards if found.
@@ -47,9 +53,13 @@ export class DUIStorage {
     });
 
     // Card updating...
+    let cardTimeout: ReturnType<typeof setTimeout>;
     this.cards.subscribe((value) => {
-      chrome.storage.local.set({ cards: value });
-      this.mapCards(); // Map again...
+      clearTimeout(cardTimeout);
+      cardTimeout = setTimeout(() => {
+        chrome.storage.local.set({ cards: value });
+        this.mapCards();
+      }, 200);
     });
 
     Logger.success("Storage listeners are set up!");

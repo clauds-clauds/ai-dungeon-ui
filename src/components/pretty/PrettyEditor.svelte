@@ -4,7 +4,8 @@
   import { Config, Logger, Storage, Utils } from "@/shared";
   import { Field, Row, Select, Foldout, Gallery, Text } from "@/shared";
   import { editorState } from "@/shared/state.svelte";
-  import { cards } from "@/shared/storage";
+  import { settings, cards } from "@/shared/storage";
+  import Slider from "../generic/Slider.svelte";
 
   if (!Storage.containsCard(editorState.name)) {
     const card: PrettyCard = {
@@ -28,16 +29,16 @@
     Logger.success(`Added ${editorState.name} to the pretty cards!`);
   }
 
-  let customization = $state("Hide");
+  let choice = $state("Hide");
 </script>
 
 {#if $cards[editorState.name]}
   <div id={Config.ID_PRETTY_EDITOR} class="dui-editor">
-    <Field label="Pretty Settings">
-      <Select choices={["Hide", "Show"]} bind:value={customization} />
+    <Field label="Pretty Stuff">
+      <Select choices={["Hide", "Customize", "Configure"]} bind:value={choice} />
     </Field>
 
-    {#if customization === "Show"}
+    {#if choice === "Customize"}
       <Field label="TRIGGERS (ART)">
         <Text placeholder="Enter some comma separated art triggers." bind:value={$cards[editorState.name].triggers} />
       </Field>
@@ -68,8 +69,36 @@
         </Field>
       </Row>
 
+      {#if $cards[editorState.name].colorStyle === "Custom"}
+        <Field label="Art">
+          <Foldout icon="w_wide_brush" label="Colors"></Foldout>
+        </Field>
+      {/if}
+    {/if}
+
+    {#if choice === "Configure"}
       <Field label="Art">
-        <Foldout icon="w_wide_brush" label="Colors"></Foldout>
+        <Foldout icon="w_image" label="Icons & Graphics">
+          <Row>
+            <Field label="Icon Size (pixels)">
+              <Slider min={8} max={40} bind:value={$settings.iconSize} />
+            </Field>
+
+            <Field label="Icon Roundness (%)">
+              <Slider bind:value={$settings.iconRoundness} />
+            </Field>
+          </Row>
+
+          <Row>
+            <Field label="Border Width (pixels)">
+              <Slider min={0} max={16} bind:value={$settings.borderWidth} />
+            </Field>
+
+            <Field label="Border Opacity (%)">
+              <Slider bind:value={$settings.borderOpacity} />
+            </Field>
+          </Row>
+        </Foldout>
       </Field>
     {/if}
   </div>

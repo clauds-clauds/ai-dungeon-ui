@@ -1,6 +1,7 @@
-import { mount } from "svelte";
+import { mount, type Component } from "svelte";
 import { Config, Logger, Utils } from ".";
 import PrettyResponse from "@/components/pretty/PrettyResponse.svelte";
+import { interfaceState } from "./state.svelte";
 
 export class DUIDom {
   static connectObservers(
@@ -9,6 +10,36 @@ export class DUIDom {
     skipDomObserver: boolean = true
   ): void {
     if (!skipDomObserver) domObserver.observe(document, { childList: true, subtree: true });
+  }
+
+  static injectButton() {
+    if (document.getElementById(Config.ID_BUTTON)) return; // Return if the custom button has already been added.
+    const exitGameButton = document.querySelector(Config.SELECTOR_EXIT_GAME_BUTTON) as HTMLElement; // Grab the pre-existing button.
+
+    // Clone the stuff.
+    if (exitGameButton) {
+      const prettySettingsButton = exitGameButton.cloneNode(true) as HTMLElement;
+      prettySettingsButton.id = Config.ID_BUTTON;
+
+      // Style it a bit.
+      (prettySettingsButton.querySelector("p") as HTMLElement).innerText = "w_sword";
+      (prettySettingsButton.querySelector("span") as HTMLElement).innerText = "Pretty Settings";
+
+      // Add a listener.
+      prettySettingsButton.addEventListener("click", (e) => {
+        interfaceState.showSettings = true;
+      });
+
+      // Add it the the UI.
+      exitGameButton.parentElement?.insertBefore(prettySettingsButton, exitGameButton);
+    }
+  }
+
+  static createDiv(id: string): HTMLElement {
+    // Create a div, much documentation.
+    const div = document.createElement("div");
+    div.id = id;
+    return div;
   }
 
   static mountSafe(
@@ -26,7 +57,15 @@ export class DUIDom {
     else mount(component, { target, anchor, props });
   }
 
-  // Response stuff HERE!
+  static mountQuick(component: Component, anchorId: string) {
+    // Return if the anchor is already there.
+    if (document.getElementById(anchorId)) return;
+
+    // Create the anchor and do stuff.
+    const anchor = this.createDiv(Config.ID_ANCHOR);
+    document.body.appendChild(anchor);
+    mount(component, { target: anchor });
+  }
 
   static mountResponse(response: HTMLElement, isAction: boolean = false, isLast: boolean = false) {
     // Set the attribute.

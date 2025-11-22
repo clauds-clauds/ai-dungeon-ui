@@ -4,6 +4,7 @@ import { editorState } from "@/shared/state.svelte";
 
 // Include the theme here so that it is included in the build.
 import "@/css/theme.css";
+import PrettySettings from "@/components/pretty/PrettySettings.svelte";
 
 class DUIEvents {
   // Mutation observers HERE!
@@ -36,6 +37,9 @@ class DUIEvents {
       this.onOutputChange(records);
     });
 
+    // Mount the settings thingy.
+    // Dom.mountQuick(PrettySettings, Config.ID_ANCHOR);
+
     // Finish logging.
     Logger.success("Start-up has finished!");
   }
@@ -48,6 +52,8 @@ class DUIEvents {
       this._cachedOutput = null;
       return;
     }
+
+    // Dom.injectButton();
 
     // Try to find the output if not already done.
     if (!this._cachedOutput) {
