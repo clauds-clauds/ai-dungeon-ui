@@ -77,7 +77,10 @@
     {/if}
 
     {#if choice === "Configure (Shared)"}
-      <Field label="Art">
+      <Field label="Triggers (Detailer)">
+        <Text placeholder="Enter some comma seperated detailer triggers." bind:value={$settings.detailerTriggers} />
+      </Field>
+      <Field label="Settings">
         <Foldout icon="w_filter" label="Sliders">
           <Row>
             <Field label="Icon Size (pixels)">
@@ -108,7 +111,19 @@
               <Slider min={0} max={1024} step={32} bind:value={$settings.tooltipMaxHeight} />
             </Field>
           </Row>
+
+          <Row>
+            <Field label="Detailer Max Width">
+              <Slider min={0} max={1024} step={32} bind:value={$settings.detailerMaxWidth} />
+            </Field>
+
+            <Field label="Detailer Max Height">
+              <Slider min={0} max={1024} step={32} bind:value={$settings.detailerMaxHeight} />
+            </Field>
+          </Row>
         </Foldout>
+
+        <Foldout icon="w_wide_brush" label="Colors"></Foldout>
       </Field>
     {/if}
   </div>

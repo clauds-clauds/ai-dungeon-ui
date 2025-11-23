@@ -29,6 +29,11 @@ export class DUIUtils {
     return currentElement;
   }
 
+  static eatEvent(event: MouseEvent) {
+    event.stopPropagation();
+    event.preventDefault();
+  }
+
   static clamp(num: number, min: number, max: number): number {
     return Math.min(Math.max(num, min), max);
   }

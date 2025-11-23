@@ -1,9 +1,11 @@
-<!-- Pretty response scripting HERE! -->
+<!-- Pretty Response Script HERE! -->
 <script lang="ts">
-  import { Storage } from "@/shared";
+  import { Storage, Utils } from "@/shared";
   import type { PrettyCard } from "@/shared/types";
   import PrettyHighlight from "./PrettyHighlight.svelte";
   import { cards } from "@/shared/storage";
+  import PrettyDetailer from "./PrettyDetailer.svelte";
+  import { detailerState } from "@/shared/state.svelte";
 
   interface PrettyResponse {
     text: string;
@@ -15,6 +17,9 @@
 
   type TextChunk = { type: "text"; text: string } | { type: "card"; card: PrettyCard; text: string; skip: boolean };
   const regex = /(\s+|[.,!?;:"']|\n)/;
+
+  // If this is an action then forward it to the detailer.
+  if (isAction) detailerState.text = text;
 
   const chunks: TextChunk[] = $derived.by(() => {
     const chonks: TextChunk[] = [];
@@ -42,8 +47,17 @@
   });
 </script>
 
-<!-- Pretty Response layout HERE! -->
-<span class="dui-response">
+<!-- Pretty Response Layout HERE! -->
+{#if isLast}
+  <button
+    class="dui-detailer-anchor"
+    onclick={(event: MouseEvent) => {
+      Utils.eatEvent(event);
+    }}
+  >
+    <PrettyDetailer />
+  </button>
+{/if}<span class="dui-response">
   {#each chunks as chunk}
     {#if chunk.type === "card" && !chunk.skip}
       <PrettyHighlight card={chunk.card} text={chunk.text} />
@@ -53,9 +67,16 @@
   {/each}
 </span>
 
-<!-- Pretty Response styling HERE! -->
+<!-- Pretty Response Style HERE! -->
 <style lang="scss">
   .dui-response {
     white-space: pre-wrap;
+  }
+
+  .dui-detailer-anchor {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    cursor: default;
   }
 </style>

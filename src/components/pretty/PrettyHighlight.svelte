@@ -68,8 +68,7 @@
       transition:fly={{ y: -32, duration: 300, easing: circOut, opacity: 0 }}
       onmouseenter={onEnter}
       onclick={(event: MouseEvent) => {
-        event.stopPropagation();
-        event.preventDefault();
+        Utils.eatEvent(event);
         card.currentGraphic = card.currentGraphic + 1 > card.graphics.length - 1 ? 0 : card.currentGraphic + 1;
         DUIStorage.upsertCard(card);
       }}

@@ -15,8 +15,12 @@ const prettySettings = {
   borderWidth: 1,
   borderOpacity: 100,
 
-  tooltipMaxWidth: 512,
-  tooltipMaxHeight: 512,
+  tooltipMaxWidth: 256,
+  tooltipMaxHeight: 256,
+
+  detailerMaxWidth: 384,
+  detailerMaxHeight: 384,
+  detailerTriggers: "",
 };
 
 // Export those things...

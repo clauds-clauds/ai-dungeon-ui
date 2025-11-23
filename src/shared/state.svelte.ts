@@ -5,3 +5,8 @@ export const editorState = $state({
 export const interfaceState = $state({
   showSettings: false,
 });
+
+export const detailerState = $state({
+  text: "",
+  graphic: "",
+});
