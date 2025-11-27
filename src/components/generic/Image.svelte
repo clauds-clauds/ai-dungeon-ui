@@ -13,7 +13,7 @@
   {#if src}
     <img {src} alt="" class="dui-image" />
   {/if}
-  <span class="dui-icon">{placeholder ? "w_add" : "w_trash"}</span>
+  <span class="dui-icon dui-big-icon">{placeholder ? "add_2" : "delete"}</span>
 </button>
 
 <style lang="scss">
@@ -26,14 +26,14 @@
     border-radius: var(--dui-border-radius-large);
     overflow: hidden;
     color: var(--dui-color-blue);
-    border: 4px solid transparent;
+    outline: 4px solid transparent !important;
     cursor: pointer;
 
     &:hover {
-      border-color: var(--dui-color-blue);
+      outline-color: var(--dui-color-blue) !important;
 
       &.placeholder {
-        border-color: var(--dui-color-theme);
+        outline-color: var(--dui-color-theme) !important;
       }
 
       .dui-image {
@@ -73,5 +73,9 @@
       font-size: var(--dui-font-size-large-small);
       transition: all var(--dui-animation-duration-medium) ease-in-out;
     }
+  }
+
+  .dui-big-icon {
+    font-size: 24px !important;
   }
 </style>

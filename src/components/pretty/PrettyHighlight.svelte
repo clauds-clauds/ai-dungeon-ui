@@ -26,7 +26,8 @@
     const currentIcon = Utils.wrapIndexData(card.icons, card.currentIcon);
     const currentIconSize = settings.iconSize;
 
-    const currentColor = settings.globalColor;
+    const currentColor = card.colorStyle !== "Custom" ? settings.globalColor : card.textColor;
+    const currentBorderColor = card.colorStyle !== "Custom" ? settings.borderColor : card.borderColor;
 
     const currentBorderWidth = settings.borderWidth;
     const currentBorderStyle = card.borderStyle;
@@ -40,6 +41,7 @@
       icon: currentIcon,
       iconSize: currentIconSize,
       color: currentColor,
+      borderColor: currentBorderColor,
       borderStyle: currentBorderStyle,
       borderWidth: currentBorderWidth,
       borderRadius: currentBorderRadius,
@@ -83,7 +85,7 @@
       class="dui-highlight-icon"
       style:width={`${data.iconSize}px`}
       style:border-radius={`${data.borderRadius}%`}
-      style:border={`${data.borderWidth}px ${data.borderStyle} red`}
+      style:border={`${data.borderWidth}px ${data.borderStyle} ${data.borderColor}`}
     />
   {/if}
   {#if hovering && card.icons.length > 1}

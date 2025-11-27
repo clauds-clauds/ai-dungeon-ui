@@ -40,7 +40,7 @@
 
   .dui-grid {
     display: grid;
-    grid-area: var(--dui-gap-small);
-    grid-template-columns: repeat(auto-fit, minmax(32px, 96px));
+    gap: var(--dui-gap-small);
+    grid-template-columns: repeat(auto-fill, 96px);
   }
 </style>

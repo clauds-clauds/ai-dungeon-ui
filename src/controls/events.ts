@@ -1,10 +1,10 @@
-import PrettyEditor from "@/components/pretty/PrettyEditor.svelte";
-import { Config, Dom, Logger, Storage, Utils } from "@/shared";
+import { Config, Dom, Logger, Storage, Utils, PrettyEditor, PrettyDevMenu } from "@/shared";
 import { editorState } from "@/shared/state.svelte";
 
 // Include the theme here so that it is included in the build.
 import "@/css/theme.css";
-import PrettySettings from "@/components/pretty/PrettySettings.svelte";
+import { readSettings, settings } from "@/shared/storage";
+import { get } from "svelte/store";
 
 class DUIEvents {
   // Mutation observers HERE!
@@ -16,13 +16,13 @@ class DUIEvents {
   private static _cachedOutput: HTMLElement | null;
 
   static async onStart(): Promise<void> {
-    // Log something awfully generic.
-    Logger.info("Activating...");
-    Logger.info(`Detected environment: ${Utils.getEnvironment()}`);
-
     // Do the storage stuff.
     await Storage.load();
     Storage.listen();
+
+    // Log something awfully generic.
+    Logger.info("Activating...");
+    Logger.info(`Detected environment: ${Utils.getEnvironment()}`);
 
     // Create the DOM observer.
     this._domObserver = new MutationObserver((records) => {
@@ -37,8 +37,11 @@ class DUIEvents {
       this.onOutputChange(records);
     });
 
+    // Inject stuff.
+    Dom.injectFonts();
+
     // Mount the settings thingy.
-    // Dom.mountQuick(PrettySettings, Config.ID_ANCHOR);
+    Dom.mountQuick(PrettyDevMenu, Config.ID_ANCHOR);
 
     // Finish logging.
     Logger.success("Start-up has finished!");
@@ -53,11 +56,11 @@ class DUIEvents {
       return;
     }
 
-    // Dom.injectButton();
+    Dom.injectButton();
 
     // Try to find the output if not already done.
     if (!this._cachedOutput) {
-      this._cachedOutput = document.getElementById(Config.ID_OUTPUT); // Try to find it, then connect.
+      this._cachedOutput = document.getElementById(readSettings().dangerIdOutput); // Try to find it, then connect.
       if (this._cachedOutput) {
         Logger.success("Connected output observer!"); // Log something too.
         this._outputObserver.observe(this._cachedOutput, { childList: true, subtree: true });
@@ -118,9 +121,9 @@ class DUIEvents {
 
         // Collect all the responses.
         const responses =
-          node.id === Config.ID_RESPONSE
+          node.id === readSettings().dangerIdResponse
             ? [node]
-            : (Array.from(node.querySelectorAll(Config.SELECTOR_RESPONSE)) as HTMLElement[]);
+            : (Array.from(node.querySelectorAll(get(settings).dangerSelectorResponse)) as HTMLElement[]);
 
         // Hand it over to DOM to do the stuff with.
         Dom.transformResponses(responses);

@@ -6,6 +6,7 @@
   // Interface HERE!
   interface Field extends GenericComponent {
     offset?: boolean;
+    danger?: boolean;
   }
 
   // Props HERE!

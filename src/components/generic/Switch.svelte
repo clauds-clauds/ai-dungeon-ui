@@ -18,6 +18,7 @@
     display: inline-block;
     width: 44px;
     height: 24px;
+    justify-self: flex-end;
   }
 
   .dui-switch input {

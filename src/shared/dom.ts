@@ -2,6 +2,7 @@ import { mount, type Component } from "svelte";
 import { Config, Logger, Utils } from ".";
 import PrettyResponse from "@/components/pretty/PrettyResponse.svelte";
 import { interfaceState } from "./state.svelte";
+import { readSettings, settings } from "./storage";
 
 export class DUIDom {
   static connectObservers(
@@ -23,16 +24,33 @@ export class DUIDom {
 
       // Style it a bit.
       (prettySettingsButton.querySelector("p") as HTMLElement).innerText = "w_sword";
-      (prettySettingsButton.querySelector("span") as HTMLElement).innerText = "Pretty Settings";
+      (prettySettingsButton.querySelector("span") as HTMLElement).innerText = "Dev Menu";
 
       // Add a listener.
       prettySettingsButton.addEventListener("click", (e) => {
-        interfaceState.showSettings = true;
+        interfaceState.showDevMenu = true;
       });
 
       // Add it the the UI.
       exitGameButton.parentElement?.insertBefore(prettySettingsButton, exitGameButton);
     }
+  }
+
+  static injectFonts() {
+    // Do the basics...
+    const path = chrome.runtime.getURL("fonts/material_symbols_rounded.ttf");
+    const style = document.createElement("style");
+
+    // Assign the content:
+    style.textContent = `
+     @font-face {
+        font-family: 'Material Symbols';
+        src: url('${path}') format('truetype');
+      }
+    `;
+
+    // Append it.
+    document.head.appendChild(style);
   }
 
   static createDiv(id: string): HTMLElement {
@@ -94,7 +112,7 @@ export class DUIDom {
       if (response.hasAttribute(Config.ATTRIBUTE_TRANSFORMED)) continue;
 
       // Check if the response is an action response.
-      const actionResponse = response.querySelector(Config.ID_RESPONSE_ACTION);
+      const actionResponse = response.querySelector(readSettings().dangerIdResponseAction);
 
       // If it is, then attach it for that.
       if (actionResponse) {
@@ -113,7 +131,7 @@ export class DUIDom {
 
   // Story card stuff HERE!
   static findCard(): HTMLElement | null {
-    const title = document.querySelector(Config.SELECTOR_STORY_CARD_NAME);
+    const title = document.querySelector(readSettings().dangerSelectorCardName);
     return title ? Utils.travelUp(title as HTMLElement, 3) : null;
   }
 
@@ -122,9 +140,9 @@ export class DUIDom {
     name: string;
     triggers: string;
   } {
-    const type = card.querySelector(Config.SELECTOR_STORY_CARD_TYPE)?.firstChild?.textContent;
-    const name = card.querySelector(Config.SELECTOR_STORY_CARD_NAME)?.getAttribute("value");
-    const triggers = card.querySelector(Config.SELECTOR_STORY_CARD_TRIGGERS)?.getAttribute("value");
+    const type = card.querySelector(readSettings().dangerSelectorCardType)?.firstChild?.textContent;
+    const name = card.querySelector(readSettings().dangerSelectorCardName)?.getAttribute("value");
+    const triggers = card.querySelector(readSettings().dangerSelectorCardTriggers)?.getAttribute("value");
 
     return {
       type: type ? type : "N/A",

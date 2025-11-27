@@ -1,7 +1,9 @@
 import { Utils } from "@/shared";
+import { readSettings } from "./storage";
 
 export class DUILogger {
   private static _say(message: string, color: string = "#f8ae2c", loud: boolean = false) {
+    if (!loud && !readSettings().logsEnabled) return;
     const prefix = `DungeonUI (v${Utils.getVersion()}) ${loud ? "screams" : "says"}`;
 
     if (loud) message = message.toUpperCase();

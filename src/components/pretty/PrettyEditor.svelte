@@ -6,6 +6,7 @@
   import { editorState } from "@/shared/state.svelte";
   import { settings, cards } from "@/shared/storage";
   import Slider from "../generic/Slider.svelte";
+  import Color from "../generic/Color.svelte";
 
   if (!Storage.containsCard(editorState.name)) {
     const card: PrettyCard = {
@@ -18,7 +19,7 @@
       textColor: "#f8ae2c",
       borderColor: "#f8ae2c",
       borderStyle: "Solid",
-      colorStyle: "Default",
+      colorStyle: "Shared",
 
       icons: [],
       currentIcon: 0,
@@ -35,16 +36,16 @@
 {#if $cards[editorState.name]}
   <div id={Config.ID_PRETTY_EDITOR} class="dui-editor">
     <Field label="Pretty Stuff">
-      <Select choices={["Hide", "Customize (Card)", "Configure (Shared)"]} bind:value={choice} />
+      <Select choices={["Hide", "Show"]} bind:value={choice} />
     </Field>
 
-    {#if choice === "Customize (Card)"}
+    {#if choice === "Show"}
       <Field label="TRIGGERS (ART)">
         <Text placeholder="Enter some comma separated art triggers." bind:value={$cards[editorState.name].triggers} />
       </Field>
 
       <Field label="Art">
-        <Foldout icon="w_image" label="Icons & Graphics">
+        <Foldout icon="brush" label="Icons & Graphics">
           <Field label="Icons">
             <Gallery bind:data={$cards[editorState.name].icons} />
           </Field>
@@ -53,6 +54,24 @@
             <Gallery bind:data={$cards[editorState.name].graphics} />
           </Field>
         </Foldout>
+
+        {#if $cards[editorState.name].colorStyle === "Custom"}
+          <Foldout icon="format_paint" label="Colors">
+            <Field label="Color">
+              <Row>
+                <Text value="Customize the text color." readonly={true} area={true} />
+                <Color bind:value={$cards[editorState.name].textColor} />
+              </Row>
+            </Field>
+
+            <Field label="Border Color">
+              <Row>
+                <Text value="Customize the border color." readonly={true} area={true} />
+                <Color bind:value={$cards[editorState.name].borderColor} />
+              </Row>
+            </Field>
+          </Foldout>
+        {/if}
       </Field>
 
       <Row>
@@ -61,70 +80,13 @@
         </Field>
 
         <Field label="Color Style">
-          <Select choices={["Default", "Custom"]} bind:value={$cards[editorState.name].colorStyle} />
+          <Select choices={["Shared", "Custom"]} bind:value={$cards[editorState.name].colorStyle} />
         </Field>
 
         <Field label="HIGHLIGHT">
           <Select choices={["Always", "Story Only", "Action Only"]} bind:value={$cards[editorState.name].highlight} />
         </Field>
       </Row>
-
-      {#if $cards[editorState.name].colorStyle === "Custom"}
-        <Field label="Art">
-          <Foldout icon="w_wide_brush" label="Colors"></Foldout>
-        </Field>
-      {/if}
-    {/if}
-
-    {#if choice === "Configure (Shared)"}
-      <Field label="Triggers (Detailer)">
-        <Text placeholder="Enter some comma seperated detailer triggers." bind:value={$settings.detailerTriggers} />
-      </Field>
-      <Field label="Settings">
-        <Foldout icon="w_filter" label="Sliders">
-          <Row>
-            <Field label="Icon Size (pixels)">
-              <Slider min={8} max={40} bind:value={$settings.iconSize} />
-            </Field>
-
-            <Field label="Icon Roundness (%)">
-              <Slider bind:value={$settings.iconRoundness} />
-            </Field>
-          </Row>
-
-          <Row>
-            <Field label="Border Width (pixels)">
-              <Slider min={0} max={16} bind:value={$settings.borderWidth} />
-            </Field>
-
-            <Field label="Border Opacity (%)">
-              <Slider bind:value={$settings.borderOpacity} />
-            </Field>
-          </Row>
-
-          <Row>
-            <Field label="Tooltip Max Width">
-              <Slider min={0} max={1024} step={32} bind:value={$settings.tooltipMaxWidth} />
-            </Field>
-
-            <Field label="Tooltip Max Height">
-              <Slider min={0} max={1024} step={32} bind:value={$settings.tooltipMaxHeight} />
-            </Field>
-          </Row>
-
-          <Row>
-            <Field label="Detailer Max Width">
-              <Slider min={0} max={1024} step={32} bind:value={$settings.detailerMaxWidth} />
-            </Field>
-
-            <Field label="Detailer Max Height">
-              <Slider min={0} max={1024} step={32} bind:value={$settings.detailerMaxHeight} />
-            </Field>
-          </Row>
-        </Foldout>
-
-        <Foldout icon="w_wide_brush" label="Colors"></Foldout>
-      </Field>
     {/if}
   </div>
 {/if}

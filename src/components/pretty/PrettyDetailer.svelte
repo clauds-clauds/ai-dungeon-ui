@@ -3,7 +3,6 @@
   import { detailerState } from "@/shared/state.svelte";
   import { cards, settings } from "@/shared/storage";
   import type { PrettyCard } from "@/shared/types";
-  import { get } from "svelte/store";
 
   let card: PrettyCard | undefined = $derived.by(() => {
     // Get the latest triggers.
@@ -16,7 +15,8 @@
     const list = triggers
       .split(",")
       .map((t) => t.trim())
-      .filter(Boolean);
+      .filter(Boolean)
+      .sort((a, b) => b.length - a.length);
 
     // Just to be safe.
     const lowerText = detailerState.text.toLowerCase();
@@ -33,6 +33,7 @@
         break;
       }
     }
+    const _ = $cards; // Refresh when cards change.
     return Storage.map[cardName.toLowerCase()];
   });
 

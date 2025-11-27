@@ -12,9 +12,9 @@ export class DUIUtils {
 
   static getEnvironment(): string {
     const host = window.location.hostname;
-    if (host.startsWith("play.")) return "production";
-    if (host.startsWith("beta.")) return "beta";
-    if (host.startsWith("alpha.")) return "alpha";
+    if (host.startsWith("play.")) return "Production";
+    if (host.startsWith("beta.")) return "Beta";
+    if (host.startsWith("alpha.")) return "Alpha";
     return "N/A";
   }
 

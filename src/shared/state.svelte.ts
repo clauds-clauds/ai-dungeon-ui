@@ -3,7 +3,7 @@ export const editorState = $state({
 });
 
 export const interfaceState = $state({
-  showSettings: false,
+  showDevMenu: false,
 });
 
 export const detailerState = $state({

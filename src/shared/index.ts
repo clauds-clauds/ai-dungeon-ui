@@ -19,3 +19,4 @@ export { default as Switch } from "../components/generic/Switch.svelte";
 export { default as PrettyEditor } from "../components/pretty/PrettyEditor.svelte";
 export { default as PrettyHighlight } from "../components/pretty/PrettyHighlight.svelte";
 export { default as PrettyResponse } from "../components/pretty/PrettyResponse.svelte";
+export { default as PrettyDevMenu } from "../components/pretty/PrettyDevMenu.svelte";

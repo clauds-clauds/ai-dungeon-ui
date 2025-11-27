@@ -3,7 +3,7 @@
   import { Storage, Utils } from "@/shared";
   import type { PrettyCard } from "@/shared/types";
   import PrettyHighlight from "./PrettyHighlight.svelte";
-  import { cards } from "@/shared/storage";
+  import { cards, settings } from "@/shared/storage";
   import PrettyDetailer from "./PrettyDetailer.svelte";
   import { detailerState } from "@/shared/state.svelte";
 
@@ -48,7 +48,7 @@
 </script>
 
 <!-- Pretty Response Layout HERE! -->
-{#if isLast}
+{#if $settings.detailerEnabled && isLast && $settings.detailerTriggers !== ""}
   <button
     class="dui-detailer-anchor"
     onclick={(event: MouseEvent) => {

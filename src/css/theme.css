@@ -19,7 +19,7 @@
   --dui-font-family-title: "IBMPlexSerif";
   --dui-font-family-interface: "IBMPlexSans";
   --dui-font-family-gameplay: "IBMPlexSansGameplay";
-  --dui-font-family-icons: "VoyageIcons";
+  --dui-font-family-icons: "Material Symbols";
 
   /* Animations HERE! */
   --dui-animation-duration-fast: 150ms;
@@ -60,7 +60,7 @@
 
 .dui-icon {
   font-family: var(--dui-font-family-icons);
-  margin-top: 4px;
+  font-size: 18px;
 }
 
 .dui-attention {

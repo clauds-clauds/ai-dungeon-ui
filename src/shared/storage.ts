@@ -4,10 +4,22 @@ import type { PrettyCard } from "./types";
 
 // Default settings HERE!
 const prettySettings = {
-  enabled: true,
+  detailerEnabled: false,
+  formatterEnabled: true,
+  integrationEnabled: true,
+  logsEnabled: false,
 
-  globalColor: "#f11a4c",
-  borderColor: "#f11a4c",
+  dangerEnabled: false,
+  dangerSelectorCardType: "button[aria-labelledby='scTypeLabel']",
+  dangerSelectorCardName: "input[aria-labelledby='scTitleLabel']",
+  dangerSelectorCardTriggers: "input[aria-labelledby='scTriggersLabel']",
+  dangerSelectorResponse: "#transition-opacity",
+  dangerIdOutput: "gameplay-output",
+  dangerIdResponse: "transition-opacity",
+  dangerIdResponseAction: "span#action-text",
+
+  globalColor: "#f8ae2c",
+  borderColor: "#f8ae2c",
 
   iconSize: 28,
   iconRoundness: 0,
@@ -157,3 +169,7 @@ export class DUIStorage {
 
 export const settings = DUIStorage.settings;
 export const cards = DUIStorage.cards;
+
+export function readSettings() {
+  return get(settings);
+}

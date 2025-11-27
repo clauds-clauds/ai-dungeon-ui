@@ -43,6 +43,7 @@
     padding: 10px 12px;
 
     &.readonly {
+      pointer-events: none;
       color: var(--dui-color-basic-delta);
     }
   }
@@ -50,6 +51,10 @@
   #dui-textarea {
     resize: vertical;
     scrollbar-width: none;
+
+    &.readonly {
+      resize: none;
+    }
   }
 
   textarea::placeholder,

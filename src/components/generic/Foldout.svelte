@@ -30,7 +30,7 @@
 
     <div class="dui-right-container">
       <div class="dui-arrow-container">
-        <span class="dui-arrow dui-icon" class:expanded>w_chevron_right</span>
+        <span class="dui-arrow dui-icon" class:expanded>chevron_right</span>
       </div>
     </div>
   </button>
