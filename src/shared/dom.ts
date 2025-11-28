@@ -1,4 +1,5 @@
-import { Config, Log, mount, PrettyEditor, PrettyPanel, Storage, Utils } from "@/shared";
+import { Config, Log, mount, panelState, PrettyEditor, PrettyPanel, PrettyResponse, Storage, Utils } from "@/shared";
+import { ResponseType } from "@/shared";
 
 /* DOM HERE! */
 export class DUIDom {
@@ -35,6 +36,24 @@ export class DUIDom {
   /**
    *
    */
+  static injectButton(): void {
+    if (document.getElementById(Config.ID_BUTTON)) return;
+    const exitGameButton = document.querySelector(Config.SELECTOR_EXIT_GAME_BUTTON) as HTMLElement;
+    if (exitGameButton) {
+      const prettySettingsButton = exitGameButton.cloneNode(true) as HTMLElement;
+      prettySettingsButton.id = Config.ID_BUTTON;
+      (prettySettingsButton.querySelector("p") as HTMLElement).innerText = "w_wrench";
+      (prettySettingsButton.querySelector("span") as HTMLElement).innerText = "Dev Panel";
+      prettySettingsButton.addEventListener("click", (e) => {
+        panelState.visible = true;
+      });
+      exitGameButton.parentElement?.insertBefore(prettySettingsButton, exitGameButton);
+    }
+  }
+
+  /**
+   *
+   */
   static injectPanel(): void {
     // Create a new anchor.
     const anchor = this.createDivWithId(Config.ID_PANEL_ANCHOR);
@@ -53,6 +72,13 @@ export class DUIDom {
     if (document.getElementById(Config.ID_EDITOR) || !storyCard || (storyCard.lastChild as HTMLElement) == null) return;
     const anchor = storyCard.lastChild as HTMLElement;
     mount(PrettyEditor, { target: storyCard, anchor: anchor });
+  }
+
+  static injectResponse(response: HTMLElement, responseType: ResponseType) {
+    response.setAttribute(Config.ATTRIBUTE_RESPONSE_PRETTIFIED, "true");
+    const text = response.textContent;
+    response.textContent = "";
+    mount(PrettyResponse, { target: response, props: { text, responseType } });
   }
 
   /**
@@ -83,5 +109,22 @@ export class DUIDom {
       name: name ? name : "",
       triggers: triggers ? triggers : "",
     };
+  }
+
+  /**
+   *
+   * @param responses
+   */
+  static manipulateResponses(responses: HTMLElement[]) {
+    for (const response of responses) {
+      if (response.hasAttribute(Config.ATTRIBUTE_RESPONSE_PRETTIFIED)) continue;
+      const actionResponse = response.querySelector(Storage.readSettings().responseActionId);
+      if (actionResponse) {
+        this.injectResponse(actionResponse as HTMLElement, ResponseType.Action);
+      } else {
+        const label = response.getAttribute("aria-label");
+        this.injectResponse(response, label && label.startsWith("Last action:") ? ResponseType.Last : ResponseType.Other);
+      }
+    }
   }
 }

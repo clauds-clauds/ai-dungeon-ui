@@ -1,4 +1,8 @@
 /* Types HERE! */
+export type Adventure = {
+  storyCards: Record<string, StoryCard>;
+};
+
 export type StoryCard = {
   id: string;
   name: string;
@@ -21,3 +25,9 @@ export type GenericButton = {
   icon: string;
   onclick?: () => void;
 };
+
+export enum ResponseType {
+  Action = "Action",
+  Last = "Last",
+  Other = "Story",
+}

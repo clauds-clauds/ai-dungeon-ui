@@ -36,9 +36,13 @@ class DUIEvents {
   }
 
   static onDomChange(records: MutationRecord[]) {
-    if (Utils.getAdventureId() === "") return; // Return if the adventure ID is invalid.
+    if (Utils.getAdventureId().length === 0) {
+      this._outputObserver.disconnect();
+      this._cachedOutput = null;
+      return;
+    }
 
-    // Dom.injectButton();
+    Dom.injectButton();
 
     if (!this._cachedOutput) {
       this._cachedOutput = document.getElementById(Storage.readSettings().outputId); // Try to find it, then connect.
@@ -63,7 +67,20 @@ class DUIEvents {
     }
   }
 
-  static onOutputChange(records: MutationRecord[]) {}
+  static onOutputChange(records: MutationRecord[]) {
+    for (const record of records) {
+      for (const node of record.addedNodes) {
+        if (!(node instanceof HTMLElement)) continue;
+
+        const responses =
+          node.id === Storage.readSettings().responseId
+            ? [node]
+            : (Array.from(node.querySelectorAll(Storage.readSettings().responseSelector)) as HTMLElement[]);
+
+        Dom.manipulateResponses(responses);
+      }
+    }
+  }
 
   static onStoryCardOpen(storyCard: HTMLElement) {
     const content = Dom.readCard(storyCard);

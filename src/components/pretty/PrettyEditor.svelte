@@ -1,6 +1,6 @@
 <!-- Pretty Editor HERE! -->
 <script lang="ts">
-  import { storyCards } from "@/shared/storage";
+  import { adventures, settings } from "@/shared/storage";
   import {
     Row,
     TextField,
@@ -37,9 +37,10 @@
   }
 
   let state = $state("Hide");
+  if ($settings.integratedEditor) state = "Show";
 </script>
 
-{#if $storyCards[editState.name]}
+{#if $adventures[Utils.getAdventureId()]?.storyCards?.[editState.name]}
   <div id={Config.ID_EDITOR} class="dui-editor">
     <Group label="EXTRA OPTIONS">
       <Select options={["Hide", "Show"]} bind:value={state} />
@@ -48,31 +49,43 @@
     {#if state !== "Hide"}
       <Row>
         <Group label="Color">
-          <Select bind:value={$storyCards[editState.name].colorStyle} options={["Shared", "Custom"]} />
+          <Select
+            bind:value={$adventures[Utils.getAdventureId()].storyCards[editState.name].colorStyle}
+            options={["Shared", "Custom"]}
+          />
         </Group>
 
         <Group label="Restriction">
-          <Select bind:value={$storyCards[editState.name].restriction} options={["None", "Action Only", "Story Only"]} />
+          <Select
+            bind:value={$adventures[Utils.getAdventureId()].storyCards[editState.name].restriction}
+            options={["None", "Action Only", "Story Only"]}
+          />
         </Group>
       </Row>
 
       <Foldout icon="owl" label="Icons & Graphics" blue={true}>
         <Row>
           <Group label="Triggers (ART)">
-            <TextField bind:value={$storyCards[editState.name].triggers} placeholder="Enter some triggers!" />
+            <TextField
+              bind:value={$adventures[Utils.getAdventureId()].storyCards[editState.name].triggers}
+              placeholder="Enter some triggers!"
+            />
           </Group>
 
           <Group label="Border">
-            <Select bind:value={$storyCards[editState.name].borderStyle} options={["Solid", "Dashed", "Dotted"]} />
+            <Select
+              bind:value={$adventures[Utils.getAdventureId()].storyCards[editState.name].borderStyle}
+              options={["Solid", "Dashed", "Dotted"]}
+            />
           </Group>
         </Row>
 
         <Group label="Icons">
-          <ImageCollection bind:data={$storyCards[editState.name].icons} />
+          <ImageCollection bind:data={$adventures[Utils.getAdventureId()].storyCards[editState.name].icons} />
         </Group>
 
         <Group label="Graphics">
-          <ImageCollection bind:data={$storyCards[editState.name].graphics} />
+          <ImageCollection bind:data={$adventures[Utils.getAdventureId()].storyCards[editState.name].graphics} />
         </Group>
       </Foldout>
     {/if}

@@ -10,11 +10,6 @@ export const tabTemplates = [
     exit: false,
   },
   {
-    icon: "save",
-    label: "Storage",
-    exit: false,
-  },
-  {
     icon: "close",
     label: "",
     exit: true,

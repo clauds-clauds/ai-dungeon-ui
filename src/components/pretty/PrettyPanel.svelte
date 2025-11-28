@@ -1,13 +1,12 @@
 <!-- Pretty Panel HERE! -->
 <script lang="ts">
-  import { fade, fly, panelState, SettingsContent, StorageContent, Topbar, Utils, WorldContent } from "@/shared";
+  import { fade, fly, panelState, SettingsContent, Topbar, WorldContent } from "@/shared";
 
   // NOTE: If the tabs ever get changed then this needs to change too.
   const Content = $derived.by(() => {
     const map: Record<string, any> = {
       World: WorldContent,
       Settings: SettingsContent,
-      Storage: StorageContent,
     };
     return map[panelState.tab];
   });
@@ -45,7 +44,7 @@
     display: flex;
     position: fixed;
     width: 90%;
-    max-width: 512px;
+    max-width: 768px;
     height: 95vh;
     top: 50%;
     left: 50%;

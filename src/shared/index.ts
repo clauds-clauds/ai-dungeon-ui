@@ -1,3 +1,5 @@
+import { ResponseType } from "./types";
+
 // Svelte HERE!
 export { mount } from "svelte";
 export { writable, get } from "svelte/store";
@@ -8,6 +10,7 @@ export type { Writable } from "svelte/store";
 
 // Types HERE!
 export type { StoryCard, GenericButton } from "./types";
+export { ResponseType } from "./types";
 
 // Templates HERE!
 export { tabTemplates } from "./templates";
@@ -42,7 +45,6 @@ export { default as Tab } from "../components/panel/Tab.svelte";
 // Interface Content HERE!
 export { default as WorldContent } from "../components/panel/content/World.svelte";
 export { default as SettingsContent } from "../components/panel/content/Settings.svelte";
-export { default as StorageContent } from "../components/panel/content/Storage.svelte";
 
 // Pretty Components HERE!
 export { default as PrettyEditor } from "../components/pretty/PrettyEditor.svelte";
