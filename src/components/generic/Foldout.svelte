@@ -1,64 +1,59 @@
-<!-- Foldout scripting HERE! -->
+<!-- Foldout HERE! -->
 <script lang="ts">
-  // Imports HERE!
-  import type { GenericComponent } from "@/shared/types";
-  import { fade, slide } from "svelte/transition";
+  import { fade, slide } from "@/shared";
 
-  // Interface HERE!
-  interface Foldout extends GenericComponent {
+  interface Foldout {
+    icon?: string;
+    label?: string;
+    children?: any;
     description?: string;
     expanded?: boolean;
+    blue?: boolean;
   }
 
-  // Props HERE!
-  let { icon, label, description, children, expanded = false }: Foldout = $props();
+  let { icon, label, description, children, expanded = false, blue = false }: Foldout = $props();
 </script>
 
-<!-- Foldout layout HERE! -->
-<div class="dui-foldout" transition:fade={{ duration: 150 }}>
-  <button class="dui-button" onclick={() => (expanded = !expanded)} aria-expanded={expanded}>
-    <div class="dui-text-container">
-      <span class="dui-label">
+<div class="dui-foldout" in:fade={{ duration: 150 }}>
+  <button class="dui-foldout-button" onclick={() => (expanded = !expanded)} aria-expanded={expanded}>
+    <div class="dui-foldout-text-content" style:color={!blue ? "var(--dui-color-orange)" : "var(--dui-color-blue)"}>
+      <span class="dui-foldout-label">
         <span class="dui-icon">{icon}</span>
         {label}
       </span>
 
       {#if description && description !== ""}
-        <span class="dui-description">{description}</span>
+        <span class="dui-foldout-description">{description}</span>
       {/if}
     </div>
 
-    <div class="dui-right-container">
-      <div class="dui-arrow-container">
-        <span class="dui-arrow dui-icon" class:expanded>chevron_right</span>
+    <div class="dui-foldout-end-content">
+      <div class="dui-foldout-arrow-container">
+        <span class="dui-foldout-arrow dui-icon" class:expanded>chevron_right</span>
       </div>
     </div>
   </button>
 
   {#if expanded}
-    <div class="dui-content-container" transition:slide={{ duration: 150 }}>
+    <div class="dui-foldout-content" transition:slide={{ duration: 150 }}>
       {@render children?.()}
     </div>
   {/if}
 </div>
 
-<!-- Foldout styling HERE! -->
 <style lang="scss">
   .dui-foldout {
     width: 100%;
     overflow: hidden;
-    border-radius: var(--dui-border-radius-medium);
-    font-size: var(--dui-font-size-medium-large);
-    background-color: var(--dui-color-basic-bravo);
-    color: var(--dui-color-basic-delta);
+    color: var(--dui-color-juliett);
   }
 
-  .dui-button {
+  .dui-foldout-button {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    padding: var(--dui-padding-medium);
+    padding: var(--dui-size-charlie);
     background: none;
     color: inherit;
     font-family: inherit;
@@ -66,52 +61,53 @@
     cursor: pointer;
   }
 
-  .dui-text-container {
+  .dui-foldout-text-content {
     display: flex;
     flex-direction: column;
-    gap: var(--dui-gap-small);
-    color: var(--dui-color-blue);
-    font-size: var(--dui-font-size-medium-large);
+    gap: var(--dui-size-bravo);
   }
 
-  .dui-label {
+  .dui-foldout-label {
     display: flex;
     align-items: center;
-    gap: var(--dui-gap-small);
+    gap: var(--dui-size-bravo);
+    font-size: var(--dui-font-size-charlie);
     font-family: var(--dui-font-interface);
   }
 
-  .dui-description {
-    color: var(--dui-color-basic-echo);
-    font-family: var(--dui-font-family-gameplay);
+  .dui-foldout-description {
+    color: var(--dui-color-india);
+    font-size: var(--dui-font-size-bravo);
+    text-transform: uppercase;
   }
 
-  .dui-right-container {
+  .dui-foldout-end-content {
     display: flex;
     align-items: center;
-    gap: var(--dui-gap-medium);
+    gap: var(--dui-size-charlie);
     margin-left: auto;
   }
 
-  .dui-arrow-container {
+  .dui-foldout-arrow-container {
     display: flex;
     align-items: center;
   }
 
-  .dui-arrow {
-    font-size: 16px;
-    transition: transform var(--dui-animation-duration-fast) ease-in-out;
+  .dui-foldout-arrow {
+    color: var(--dui-color-india);
+    font-size: var(--dui-font-size-foxtrot);
+    transition: transform var(--dui-animation-duration-delta) ease-in-out;
 
     &.expanded {
       transform: rotate(90deg);
     }
   }
 
-  .dui-content-container {
-    padding: var(--dui-padding-medium);
-    border-top: 1pt solid var(--dui-color-basic-alpha);
+  .dui-foldout-content {
+    padding: var(--dui-size-bravo);
+    border-top: 1px solid var(--dui-color-echo);
     display: flex;
-    gap: var(--dui-gap-medium);
+    gap: var(--dui-size-charlie);
     flex-direction: column;
   }
 </style>

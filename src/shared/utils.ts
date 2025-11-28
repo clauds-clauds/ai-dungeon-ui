@@ -1,23 +1,51 @@
+/* Utils */
 export class DUIUtils {
-  /* Extension stuff HERE! */
+  /**
+   *
+   * @param num
+   * @param min
+   * @param max
+   * @returns
+   */
+  static clamp(num: number, min: number, max: number): number {
+    return Math.min(Math.max(num, min), max);
+  }
 
+  /**
+   *
+   * @returns
+   */
   static getVersion(): string {
     return chrome.runtime.getManifest().version;
   }
 
+  /**
+   *
+   * @returns
+   */
   static getAdventureId(): string {
     const match = window.location.pathname.match(/adventure\/([^\/]+)/);
-    return match ? match[1] : "N/A";
+    return match ? match[1] : "";
   }
 
+  /**
+   *
+   * @returns
+   */
   static getEnvironment(): string {
     const host = window.location.hostname;
     if (host.startsWith("play.")) return "Production";
     if (host.startsWith("beta.")) return "Beta";
     if (host.startsWith("alpha.")) return "Alpha";
-    return "N/A";
+    return "";
   }
 
+  /**
+   *
+   * @param element
+   * @param level
+   * @returns
+   */
   static travelUp(element: HTMLElement, level: number) {
     let currentElement = element;
 
@@ -29,21 +57,32 @@ export class DUIUtils {
     return currentElement;
   }
 
+  /**
+   *
+   * @param event
+   */
   static eatEvent(event: MouseEvent) {
     event.stopPropagation();
     event.preventDefault();
   }
 
-  static clamp(num: number, min: number, max: number): number {
-    return Math.min(Math.max(num, min), max);
-  }
-
+  /**
+   *
+   * @param data
+   * @param currentIndex
+   * @returns
+   */
   static wrapIndexData(data: string[], currentIndex: number) {
     if (!data || data.length === 0) return "";
     const index = Math.max(0, Math.min(currentIndex ?? 0, data.length - 1));
     return data[index];
   }
 
+  /**
+   *
+   * @param fileType
+   * @returns
+   */
   static async requestFile(fileType: string): Promise<File | null> {
     return new Promise((resolve) => {
       const input = document.createElement("input");
@@ -63,6 +102,12 @@ export class DUIUtils {
     });
   }
 
+  /**
+   *
+   * @param base64
+   * @param filename
+   * @returns
+   */
   static async downloadImage(base64: string, filename: string) {
     if (!base64) return;
 
@@ -78,6 +123,11 @@ export class DUIUtils {
     URL.revokeObjectURL(url);
   }
 
+  /**
+   *
+   * @param file
+   * @returns
+   */
   static async convertFile(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -87,6 +137,11 @@ export class DUIUtils {
     });
   }
 
+  /**
+   *
+   * @param fileType
+   * @returns
+   */
   static async requestFileData(fileType: string): Promise<string | null> {
     const file = await this.requestFile(fileType);
     if (!file) return null;

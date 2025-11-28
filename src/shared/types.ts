@@ -1,17 +1,11 @@
-export interface GenericComponent {
-  icon?: string;
-  label?: string;
-  children?: any;
-  lighter?: boolean;
-}
-
-export type PrettyCard = {
+/* Types HERE! */
+export type StoryCard = {
   id: string;
   name: string;
   type: string;
   triggers: string;
 
-  highlight: string;
+  restriction: string;
   textColor: string;
   borderColor: string;
   borderStyle: string;
@@ -21,4 +15,9 @@ export type PrettyCard = {
   currentIcon: number;
   graphics: string[];
   currentGraphic: number;
+};
+
+export type GenericButton = {
+  icon: string;
+  onclick?: () => void;
 };

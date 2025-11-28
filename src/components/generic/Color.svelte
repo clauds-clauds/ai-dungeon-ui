@@ -1,34 +1,31 @@
-<!-- Color Scripting HERE! -->
+<!-- Color HERE! -->
 <script lang="ts">
-  import type { GenericComponent } from "@/shared/types";
-  import { fade } from "svelte/transition";
+  import { fade } from "@/shared";
 
-  interface Color extends GenericComponent {
+  interface Color {
     value?: string;
   }
 
   let { value = $bindable() }: Color = $props();
 </script>
 
-<div class="dui-color" transition:fade={{ duration: 150 }}>
-  <input type="color" bind:value style="filter: drop-shadow(0 0 48px {value});" />
+<div class="dui-color" in:fade={{ duration: 200 }}>
+  <input type="color" bind:value style="filter: drop-shadow(0 0 16px {value});" />
 </div>
 
-<!-- Color Styling HERE! -->
 <style lang="scss">
   .dui-color {
     display: flex;
-    padding: var(--dui-padding-small);
-    background-color: var(--dui-color-basic-charlie);
-    border-radius: var(--dui-border-radius-medium);
+    padding: var(--dui-size-bravo);
+    background-color: var(--dui-color-bravo);
+    border-radius: var(--dui-size-charlie);
     min-width: 96px;
     min-height: 96px;
-    margin-left: auto;
 
     input {
       flex: 1;
-      aspect-ratio: var(--dui-aspect-ratio-square);
-      border-radius: var(--dui-border-radius-medium);
+      aspect-ratio: var(--dui-aspect-square);
+      border-radius: var(--dui-size-charlie);
       background-color: red;
     }
   }

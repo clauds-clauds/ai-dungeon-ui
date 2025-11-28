@@ -1,21 +1,15 @@
-<!-- Text scripting HERE! -->
+<!-- Text Field HERE! -->
 <script lang="ts">
-  // Imports HERE!
-  import type { GenericComponent } from "@/shared/types";
-
-  // Interface HERE!
-  interface Text extends GenericComponent {
+  interface TextField {
     value?: string;
     placeholder?: string;
     readonly?: boolean;
     area?: boolean;
   }
 
-  // Props HERE!
-  let { value = $bindable(), placeholder, readonly, area }: Text = $props();
+  let { value = $bindable(""), placeholder = "This is a placeholder!", readonly = false, area = false }: TextField = $props();
 </script>
 
-<!-- Text layout HERE! -->
 {#if area}
   <textarea
     id="dui-textarea"
@@ -31,20 +25,19 @@
   <input class="dui-text dui-attention" class:readonly type="text" autocomplete="off" bind:value {placeholder} {readonly} />
 {/if}
 
-<!-- Text styling HERE! -->
 <style lang="scss">
   .dui-text {
-    background-color: var(--dui-color-basic-bravo);
-    color: var(--dui-color-basic-echo);
-    border-radius: var(--dui-border-radius-medium);
-    font-size: var(--dui-font-size-medium-large);
+    background-color: var(--dui-color-bravo);
+    color: var(--dui-color-juliett);
+    border-radius: var(--dui-size-bravo);
+    font-size: var(--dui-font-size-charlie);
 
-    min-height: var(--dui-size-large);
+    min-height: var(--dui-size-golf);
     padding: 10px 12px;
 
     &.readonly {
       pointer-events: none;
-      color: var(--dui-color-basic-delta);
+      color: var(--dui-color-india);
     }
   }
 
@@ -59,7 +52,7 @@
 
   textarea::placeholder,
   input::placeholder {
-    color: var(--dui-color-basic-echo);
+    color: var(--dui-color-juliett);
     opacity: 0.25;
   }
 </style>

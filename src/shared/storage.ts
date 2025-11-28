@@ -1,175 +1,165 @@
-import { get, writable, type Writable } from "svelte/store";
-import { Logger } from ".";
-import type { PrettyCard } from "./types";
+// Imports HERE!
+import type { StoryCard, Writable } from "@/shared";
+import { writable, Log, get } from "@/shared";
 
-// Default settings HERE!
-const prettySettings = {
-  detailerEnabled: false,
-  formatterEnabled: true,
-  integrationEnabled: true,
-  logsEnabled: false,
+// The default settings, saved when loading the extension for the first time.
+const defaultSettings = {
+  enabled: true, // Whether DungeonUI is enabled and doing stuff.
+  devEnabled: true, // Whether development stuff (such as visible logs) are enabled.
 
-  dangerEnabled: false,
-  dangerSelectorCardType: "button[aria-labelledby='scTypeLabel']",
-  dangerSelectorCardName: "input[aria-labelledby='scTitleLabel']",
-  dangerSelectorCardTriggers: "input[aria-labelledby='scTriggersLabel']",
-  dangerSelectorResponse: "#transition-opacity",
-  dangerIdOutput: "gameplay-output",
-  dangerIdResponse: "transition-opacity",
-  dangerIdResponseAction: "span#action-text",
+  // Dangerous settings below!
+  storyCardTypeSelector: "button[aria-labelledby='scTypeLabel']",
+  storyCardNameSelector: "input[aria-labelledby='scTitleLabel']",
+  storyCardTriggersSelector: "input[aria-labelledby='scTriggersLabel']",
+  responseSelector: "#transition-opacity",
+  outputId: "gameplay-output",
+  responseId: "transition-opacity",
+  responseActionId: "span#action-text",
 
-  globalColor: "#f8ae2c",
+  // All the other stuff.
+  textColor: "#f8ae2c",
   borderColor: "#f8ae2c",
-
-  iconSize: 28,
-  iconRoundness: 0,
-
-  borderWidth: 1,
-  borderOpacity: 100,
-
-  tooltipMaxWidth: 256,
-  tooltipMaxHeight: 256,
-
-  detailerMaxWidth: 384,
-  detailerMaxHeight: 384,
-  detailerTriggers: "",
 };
 
-// Export those things...
-export type PrettySettings = typeof prettySettings;
+// Export the default settings so they can be used.
+export type Settings = typeof defaultSettings;
 
+/**
+ * `Storage` is a class which handles the saving of all the things. What a surprise, right?
+ */
 export class DUIStorage {
-  public static settings: Writable<PrettySettings> = writable(prettySettings);
-  public static cards: Writable<Record<string, PrettyCard>> = writable({});
-  public static map: Record<string, PrettyCard> = {};
+  public static settings: Writable<Settings> = writable(defaultSettings); // The stored settings.
+  public static storyCards: Writable<Record<string, StoryCard>> = writable({}); // The stored story cards.
+  public static storyCardMap: Record<string, StoryCard> = {};
 
-  /* Basic storage stuff HERE! */
-  static async load() {
+  /**
+   * Loads the data from storage.
+   */
+  static async load(): Promise<void> {
     try {
-      Logger.info("Loading storage data...");
-      const result = await chrome.storage.local.get(["settings", "cards"]);
+      // Log the start.
+      Log.info("Loading storage data...");
 
-      // Load the settings if found.
-      if (result.settings) {
-        this.settings.set({ ...prettySettings, ...result.settings });
-      }
+      // Try to retrieve the settings and cards.
+      const result = await chrome.storage.local.get(["settings", "storyCards"]);
 
-      // Load the cards if found.
-      if (result.cards) {
-        this.cards.set(result.cards);
-      }
+      // Apply the settings.
+      if (result.settings) this.settings.set({ ...this.settings, ...result.settings });
 
-      Logger.success("Loaded storage data!");
+      // Apply the story cards.
+      if (result.storyCards) this.storyCards.set({ ...this.storyCards, ...result.storyCards });
+
+      // Log the end.
+      Log.success("Loaded storage data!");
     } catch (error) {
-      Logger.error("Storage " + error);
+      Log.error("" + error);
     }
   }
 
+  /**
+   *
+   */
   static listen() {
-    Logger.info("Fixing storage listeners...");
-
-    // Settings updating...
     this.settings.subscribe((value) => {
       chrome.storage.local.set({ settings: value });
     });
 
-    // Card updating...
-    let cardTimeout: ReturnType<typeof setTimeout>;
-    this.cards.subscribe((value) => {
-      clearTimeout(cardTimeout);
-      cardTimeout = setTimeout(() => {
-        chrome.storage.local.set({ cards: value });
-        this.mapCards();
+    let storyCardTimeout: ReturnType<typeof setTimeout>;
+    this.storyCards.subscribe((value) => {
+      clearTimeout(storyCardTimeout);
+      storyCardTimeout = setTimeout(() => {
+        chrome.storage.local.set({ storyCards: value });
+        this.optimizeStoryCards();
       }, 200);
     });
-
-    Logger.success("Storage listeners are set up!");
   }
 
-  static mapCards() {
-    const cards = get(this.cards);
-    const newMap: Record<string, PrettyCard> = {};
+  /**
+   *
+   */
+  static optimizeStoryCards() {
+    const cards = get(this.storyCards);
+    const map: Record<string, StoryCard> = {};
 
     for (const card of Object.values(cards)) {
       if (card.triggers) {
         const triggers = card.triggers.split(",").map((t) => t.trim().toLowerCase());
         for (const trigger of triggers) {
           if (trigger) {
-            newMap[trigger] = card;
+            map[trigger] = card;
           }
         }
       }
     }
 
-    this.map = newMap;
-    Logger.success(`Remapped ${Object.keys(newMap).length} triggers!`);
+    this.storyCardMap = map;
+    Log.success(`Optimized ${Object.keys(map).length} triggers!`);
   }
 
-  /* Pretty story card stuff HERE! */
-  static syncCard(cachedName: string, latestName: string, type: string = "Class") {
-    // Log something.
-    Logger.info("Synchronizing card data...");
+  /**
+   *
+   * @param cachedName
+   * @param recentName
+   * @param type
+   */
+  static syncStoryCard(cachedName: string, recentName: string, type: string = "Class") {
+    if (recentName === "") return;
+    const storyCards = get(this.storyCards);
+    const storyCard = storyCards[cachedName];
+    if (!storyCard) return;
+    storyCard.type = type;
 
-    // Skip this thing if the latest name is N/A.
-    if (latestName === "N/A") {
-      Logger.error("Tried to save invalid card, discarding...");
-      return;
-    }
-
-    // Grab all the cards.
-    const cards = get(this.cards);
-
-    // Get the card with the cached name.
-    const card = cards[cachedName];
-
-    // If there is no card then just return.
-    if (!card) {
-      Logger.error("No cached card found!");
-      return;
-    }
-
-    // Fix the type.
-    card.type = type;
-
-    // Otherwise check for a name mismatch.
-    if (cachedName !== latestName) {
-      // If so then solve it.
-      card.name = latestName;
-      this.upsertCard(card);
-      this.deleteCard(cachedName); // Delete old.
-
-      // Debug some stuff for it.
-      Logger.success(`Solved mismatch.`);
-      Logger.info("Old name: " + cachedName);
-      Logger.info("New name: " + latestName);
+    if (cachedName !== recentName) {
+      storyCard.name = recentName;
+      this.upsertStoryCard(storyCard);
+      this.deleteStoryCard(cachedName);
     } else {
-      this.upsertCard(card);
+      this.upsertStoryCard(storyCard);
     }
   }
 
-  static upsertCard(card: PrettyCard) {
-    if (!card.name) return;
-    this.cards.update((cards) => {
-      cards[card.name] = card;
-      return cards;
+  /**
+   *
+   * @param storyCard
+   * @returns
+   */
+  static upsertStoryCard(storyCard: StoryCard) {
+    if (!storyCard.name) return;
+    this.storyCards.update((storyCards) => {
+      storyCards[storyCard.name] = storyCard;
+      return storyCards;
     });
   }
 
-  static containsCard(name: string) {
-    return get(this.cards).hasOwnProperty(name);
+  /**
+   *
+   * @param name
+   * @returns
+   */
+  static hasStoryCard(name: string) {
+    return get(this.storyCards).hasOwnProperty(name);
   }
 
-  static deleteCard(name: string) {
-    this.cards.update((cards) => {
-      delete cards[name];
-      return cards;
+  /**
+   *
+   * @param name
+   */
+  static deleteStoryCard(name: string) {
+    this.storyCards.update((storyCards) => {
+      delete storyCards[name];
+      return storyCards;
     });
+  }
+
+  /**
+   * Read the stored settings.
+   * @returns The most recent settings.
+   */
+  static readSettings(): Settings {
+    return get(this.settings);
   }
 }
 
+// Export the contents for use in other things.
 export const settings = DUIStorage.settings;
-export const cards = DUIStorage.cards;
-
-export function readSettings() {
-  return get(settings);
-}
+export const storyCards = DUIStorage.storyCards;

@@ -1,12 +1,9 @@
-export const editorState = $state({
-  name: "N/A",
+/* State HERE! */
+export const panelState = $state({
+  visible: true,
+  tab: "World",
 });
 
-export const interfaceState = $state({
-  showDevMenu: false,
-});
-
-export const detailerState = $state({
-  text: "",
-  graphic: "",
+export const editState = $state({
+  name: "",
 });

@@ -1,135 +1,84 @@
-import { Config, Dom, Logger, Storage, Utils, PrettyEditor, PrettyDevMenu } from "@/shared";
-import { editorState } from "@/shared/state.svelte";
+// Imports HERE!
+import { Dom, editState, Log, Storage, Utils } from "@/shared";
 
-// Include the theme here so that it is included in the build.
-import "@/css/theme.css";
-import { readSettings, settings } from "@/shared/storage";
-import { get } from "svelte/store";
+// Includes the CSS file here, otherwise it is ignored.
+import "@/css/style.css";
 
+/**
+ * `Events` is a control class which handles start-up and all reactive stuff.
+ */
 class DUIEvents {
-  // Mutation observers HERE!
   private static _domObserver: MutationObserver;
   private static _outputObserver: MutationObserver;
 
-  // Cached stuff HERE!
-  private static _cachedCard: HTMLElement | null;
+  private static _cachedStoryCard: HTMLElement | null;
   private static _cachedOutput: HTMLElement | null;
 
   static async onStart(): Promise<void> {
-    // Do the storage stuff.
-    await Storage.load();
+    // Load storage first, otherwise everything explodes.
+    Storage.load();
     Storage.listen();
 
-    // Log something awfully generic.
-    Logger.info("Activating...");
-    Logger.info(`Detected environment: ${Utils.getEnvironment()}`);
+    // Inject some stuff.
+    Dom.injectIcons();
+    Dom.injectPanel();
 
-    // Create the DOM observer.
+    // Initialize the observers.
     this._domObserver = new MutationObserver((records) => {
       this.onDomChange(records);
     });
-
-    // Connect it.
-    this._domObserver.observe(document, { childList: true, subtree: true });
-
-    // Create the output observer.
     this._outputObserver = new MutationObserver((records) => {
       this.onOutputChange(records);
     });
 
-    // Inject stuff.
-    Dom.injectFonts();
-
-    // Mount the settings thingy.
-    Dom.mountQuick(PrettyDevMenu, Config.ID_ANCHOR);
-
-    // Finish logging.
-    Logger.success("Start-up has finished!");
+    // Connect the DOM observer.
+    this._domObserver.observe(document, { childList: true, subtree: true });
   }
 
   static onDomChange(records: MutationRecord[]) {
-    // If there is no valid adventure ID then disconnect the output observer and return.
-    if (Utils.getAdventureId() === "N/A") {
-      Logger.info("Left adventure, disconnecting...");
-      this._outputObserver.disconnect();
-      this._cachedOutput = null;
-      return;
-    }
+    if (Utils.getAdventureId() === "") return; // Return if the adventure ID is invalid.
 
-    Dom.injectButton();
+    // Dom.injectButton();
 
-    // Try to find the output if not already done.
     if (!this._cachedOutput) {
-      this._cachedOutput = document.getElementById(readSettings().dangerIdOutput); // Try to find it, then connect.
+      this._cachedOutput = document.getElementById(Storage.readSettings().outputId); // Try to find it, then connect.
       if (this._cachedOutput) {
-        Logger.success("Connected output observer!"); // Log something too.
         this._outputObserver.observe(this._cachedOutput, { childList: true, subtree: true });
       }
     }
 
-    // Try to find any open story cards.
     const card = Dom.findCard();
 
-    // Handle opening/closing the card.
     if (card) {
-      if (this._cachedCard !== card) {
-        if (this._cachedCard) {
-          this.onCardClose(this._cachedCard);
+      if (this._cachedStoryCard !== card) {
+        if (this._cachedStoryCard) {
+          this.onStoryCardClose(this._cachedStoryCard);
         }
-        this.onCardOpen(card);
+        this.onStoryCardOpen(card);
       }
     } else {
-      if (this._cachedCard) {
-        this.onCardClose(this._cachedCard);
+      if (this._cachedStoryCard) {
+        this.onStoryCardClose(this._cachedStoryCard);
       }
     }
   }
 
-  static onCardOpen(card: HTMLElement) {
-    // Read the content of the card.
-    const content = Dom.readCard(card);
+  static onOutputChange(records: MutationRecord[]) {}
 
-    // Grab the name of the card and send it over to the editor state so that it is reactive.
-    editorState.name = content.name;
-
-    // Grab the last element of the card, usually the notes thingy.
-    const anchor = card.lastChild as HTMLElement | null;
-    Dom.mountSafe(Config.ID_PRETTY_EDITOR, PrettyEditor, card, anchor);
-
-    // Then cache the card.
-    this._cachedCard = card;
+  static onStoryCardOpen(storyCard: HTMLElement) {
+    const content = Dom.readCard(storyCard);
+    editState.name = content.name;
+    Dom.injectEditor(storyCard);
+    this._cachedStoryCard = storyCard;
+    // const anchor = storyCard.lastChild as HTMLElement | null; // Notes thingy.
   }
 
-  static onCardClose(card: HTMLElement) {
-    // Load the cached content.
-    const content = Dom.readCard(card);
-
-    // Sync the stuff.
-    Storage.syncCard(editorState.name, content.name, content.type);
-
-    // Clear the cached card.
-    this._cachedCard = null;
-  }
-
-  static onOutputChange(records: MutationRecord[]) {
-    // Go through all the changes.
-    for (const record of records) {
-      // Go through all added nodes.
-      for (const node of record.addedNodes) {
-        // Skip non-element thingies.
-        if (!(node instanceof HTMLElement)) continue;
-
-        // Collect all the responses.
-        const responses =
-          node.id === readSettings().dangerIdResponse
-            ? [node]
-            : (Array.from(node.querySelectorAll(get(settings).dangerSelectorResponse)) as HTMLElement[]);
-
-        // Hand it over to DOM to do the stuff with.
-        Dom.transformResponses(responses);
-      }
-    }
+  static onStoryCardClose(storyCard: HTMLElement) {
+    const content = Dom.readCard(storyCard);
+    Storage.syncStoryCard(editState.name, content.name, content.type);
+    this._cachedStoryCard = null;
   }
 }
 
+// Start whatever DUI is supposed to do.
 DUIEvents.onStart();

@@ -1,8 +1,8 @@
+<!-- Slider HERE! -->
 <script lang="ts">
   import { Utils } from "@/shared";
-  import type { GenericComponent } from "@/shared/types";
 
-  interface Slider extends GenericComponent {
+  interface Slider {
     min?: number;
     max?: number;
     step?: number;
@@ -20,7 +20,7 @@
 </script>
 
 <div class="dui-slider">
-  <input type="number" class="dui-slider-value" {min} {max} {step} bind:value />
+  <input type="number" class="dui-slider-box" {min} {max} {step} bind:value />
   <input type="range" {min} {max} {step} bind:value style="--progress: {percentage}%" />
 </div>
 
@@ -28,16 +28,17 @@
   .dui-slider {
     display: flex;
     align-items: center;
-    gap: var(--dui-gap-medium);
+    gap: var(--dui-size-charlie);
   }
 
-  .dui-slider-value {
-    background-color: var(--dui-color-basic-charlie);
-    color: var(--dui-color-basic-echo);
-    border-radius: var(--dui-border-radius-medium);
-    padding: var(--dui-padding-small) 0;
-    width: var(--dui-size-large);
-    aspect-ratio: var(--dui-aspect-ratio-square);
+  .dui-slider-box {
+    background-color: var(--dui-color-bravo);
+    border: 1px solid var(--dui-color-echo);
+    color: var(--dui-color-juliett);
+    border-radius: var(--dui-size-bravo);
+    padding: var(--dui-size-bravo) 0;
+    width: var(--dui-size-golf);
+    aspect-ratio: var(--dui-aspect-square);
     text-align: center;
     font-family: inherit;
 
@@ -63,8 +64,8 @@
     background-color: white;
     height: 20px;
     width: 20px;
-    border-radius: var(--dui-border-radius-full);
-    transition: transform var(--dui-animation-duration-fast) ease-in-out;
+    border-radius: 50%;
+    transition: transform var(--dui-animation-duration-delta) ease-in-out;
     transform: scale(1.35);
   }
 
@@ -72,9 +73,9 @@
     background-color: white;
     height: 20px;
     width: 20px;
-    border-radius: var(--dui-border-radius-full);
+    border-radius: 50%;
     border: none;
-    transition: transform var(--dui-animation-duration-fast) ease-in-out;
+    transition: transform var(--dui-animation-duration-delta) ease-in-out;
     transform: scale(1.35);
   }
 
@@ -88,7 +89,7 @@
 
   input[type="range"]::-webkit-slider-runnable-track {
     height: 4px;
-    border-radius: var(--dui-border-radius-small);
+    border-radius: var(--dui-size-bravo);
     background: linear-gradient(to right, var(--dui-color-orange) var(--progress), rgba(0, 0, 0, 0.3) var(--progress));
   }
 

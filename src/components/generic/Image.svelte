@@ -1,81 +1,61 @@
 <script lang="ts">
-  import type { GenericComponent } from "@/shared/types";
+  import type { GenericButton } from "@/shared";
 
-  interface Image extends GenericComponent {
+  interface Image {
     src?: string;
+    aspect?: string;
     placeholder?: boolean;
-    onclick?: () => void;
+    buttons?: GenericButton[];
+    buttonSize?: number;
   }
-  let { src, placeholder, onclick }: Image = $props();
+
+  let { src, placeholder = false, aspect = "", buttons, buttonSize = 48 }: Image = $props();
 </script>
 
-<button class="dui-button" class:placeholder {onclick}>
-  {#if src}
-    <img {src} alt="" class="dui-image" />
-  {/if}
-  <span class="dui-icon dui-big-icon">{placeholder ? "add_2" : "delete"}</span>
-</button>
+<div
+  class="dui-image"
+  class:dui-image-placeholder={placeholder}
+  style="background-image: url('{src}')"
+  style:aspect-ratio={aspect}
+>
+  {#each buttons as button}
+    <button class="dui-image-button" onclick={button.onclick}>
+      <span class="dui-icon" style:font-size={`${buttonSize}px`}>{button.icon}</span>
+    </button>
+  {/each}
+</div>
 
 <style lang="scss">
-  .dui-button {
-    position: relative;
+  .dui-image {
+    border-radius: var(--dui-size-charlie);
     display: flex;
-    justify-content: center;
     align-items: center;
-    aspect-ratio: 1/1;
-    border-radius: var(--dui-border-radius-large);
-    overflow: hidden;
-    color: var(--dui-color-blue);
-    outline: 4px solid transparent !important;
-    cursor: pointer;
+    justify-content: center;
+    padding: var(--dui-size-charlie);
+    background-size: cover;
+    background-position: center;
+    background-color: rgb(from var(--dui-color-blue) r g b / 0.1);
+    outline: 2px solid transparent !important;
+    transition: all var(--dui-animation-duration-delta) ease-in-out;
 
     &:hover {
       outline-color: var(--dui-color-blue) !important;
 
-      &.placeholder {
-        outline-color: var(--dui-color-theme) !important;
+      .dui-image-button {
+        opacity: 1;
       }
-
-      .dui-image {
-        filter: brightness(50%) blur(4px) grayscale(50%);
-        backdrop-filter: brightness(50%);
-      }
-
-      .dui-icon {
-        opacity: 100%;
-      }
-    }
-
-    &.placeholder {
-      color: var(--dui-color-orange);
-      background-color: rgb(from var(--dui-color-orange) r g b / 0.1);
-
-      .dui-icon {
-        opacity: 100%;
-      }
-    }
-
-    .dui-image {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: inherit;
-      z-index: 0;
-      transition: all var(--dui-animation-duration-medium) ease-in-out;
-    }
-
-    .dui-icon {
-      opacity: 0%;
-      position: relative;
-      z-index: 1;
-      font-size: var(--dui-font-size-large-small);
-      transition: all var(--dui-animation-duration-medium) ease-in-out;
     }
   }
 
-  .dui-big-icon {
-    font-size: 24px !important;
+  .dui-image-placeholder {
+    .dui-image-button {
+      opacity: 1;
+    }
+  }
+
+  .dui-image-button {
+    aspect-ratio: 1/1;
+    color: var(--dui-color-blue);
+    opacity: 0;
   }
 </style>

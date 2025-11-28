@@ -1,92 +1,80 @@
-<!-- Pretty editor scripting HERE! -->
+<!-- Pretty Editor HERE! -->
 <script lang="ts">
-  import type { PrettyCard } from "@/shared/types";
-  import { Config, Logger, Storage, Utils } from "@/shared";
-  import { Field, Row, Select, Foldout, Gallery, Text } from "@/shared";
-  import { editorState } from "@/shared/state.svelte";
-  import { settings, cards } from "@/shared/storage";
-  import Slider from "../generic/Slider.svelte";
-  import Color from "../generic/Color.svelte";
+  import { storyCards } from "@/shared/storage";
+  import {
+    Row,
+    TextField,
+    Foldout,
+    Config,
+    editState,
+    Group,
+    ImageCollection,
+    Select,
+    Storage,
+    type StoryCard,
+    Utils,
+  } from "@/shared";
 
-  if (!Storage.containsCard(editorState.name)) {
-    const card: PrettyCard = {
+  if (!Storage.hasStoryCard(editState.name)) {
+    // Note to self: If there is ever an issue where people create new cards and they suddenly already have content, it is due to this below.
+    editState.name = "My First Story Card";
+    const storyCard: StoryCard = {
       id: Utils.getAdventureId(),
-      name: editorState.name,
-      type: "Test",
+      name: editState.name,
+      type: "Class",
       triggers: "",
-
-      highlight: "Always",
-      textColor: "#f8ae2c",
-      borderColor: "#f8ae2c",
+      restriction: "None",
+      textColor: Storage.readSettings().textColor,
+      borderColor: Storage.readSettings().borderColor,
       borderStyle: "Solid",
       colorStyle: "Shared",
-
       icons: [],
       currentIcon: 0,
       graphics: [],
       currentGraphic: 0,
     };
-    Storage.upsertCard(card);
-    Logger.success(`Added ${editorState.name} to the pretty cards!`);
+    Storage.upsertStoryCard(storyCard);
   }
 
-  let choice = $state("Hide");
+  let state = $state("Hide");
 </script>
 
-{#if $cards[editorState.name]}
-  <div id={Config.ID_PRETTY_EDITOR} class="dui-editor">
-    <Field label="Pretty Stuff">
-      <Select choices={["Hide", "Show"]} bind:value={choice} />
-    </Field>
+{#if $storyCards[editState.name]}
+  <div id={Config.ID_EDITOR} class="dui-editor">
+    <Group label="EXTRA OPTIONS">
+      <Select options={["Hide", "Show"]} bind:value={state} />
+    </Group>
 
-    {#if choice === "Show"}
-      <Field label="TRIGGERS (ART)">
-        <Text placeholder="Enter some comma separated art triggers." bind:value={$cards[editorState.name].triggers} />
-      </Field>
-
-      <Field label="Art">
-        <Foldout icon="brush" label="Icons & Graphics">
-          <Field label="Icons">
-            <Gallery bind:data={$cards[editorState.name].icons} />
-          </Field>
-
-          <Field label="Graphics">
-            <Gallery bind:data={$cards[editorState.name].graphics} />
-          </Field>
-        </Foldout>
-
-        {#if $cards[editorState.name].colorStyle === "Custom"}
-          <Foldout icon="format_paint" label="Colors">
-            <Field label="Color">
-              <Row>
-                <Text value="Customize the text color." readonly={true} area={true} />
-                <Color bind:value={$cards[editorState.name].textColor} />
-              </Row>
-            </Field>
-
-            <Field label="Border Color">
-              <Row>
-                <Text value="Customize the border color." readonly={true} area={true} />
-                <Color bind:value={$cards[editorState.name].borderColor} />
-              </Row>
-            </Field>
-          </Foldout>
-        {/if}
-      </Field>
-
+    {#if state !== "Hide"}
       <Row>
-        <Field label="Border Style">
-          <Select choices={["Solid", "Dashed", "Dotted"]} bind:value={$cards[editorState.name].borderStyle} />
-        </Field>
+        <Group label="Color">
+          <Select bind:value={$storyCards[editState.name].colorStyle} options={["Shared", "Custom"]} />
+        </Group>
 
-        <Field label="Color Style">
-          <Select choices={["Shared", "Custom"]} bind:value={$cards[editorState.name].colorStyle} />
-        </Field>
-
-        <Field label="HIGHLIGHT">
-          <Select choices={["Always", "Story Only", "Action Only"]} bind:value={$cards[editorState.name].highlight} />
-        </Field>
+        <Group label="Restriction">
+          <Select bind:value={$storyCards[editState.name].restriction} options={["None", "Action Only", "Story Only"]} />
+        </Group>
       </Row>
+
+      <Foldout icon="owl" label="Icons & Graphics" blue={true}>
+        <Row>
+          <Group label="Triggers (ART)">
+            <TextField bind:value={$storyCards[editState.name].triggers} placeholder="Enter some triggers!" />
+          </Group>
+
+          <Group label="Border">
+            <Select bind:value={$storyCards[editState.name].borderStyle} options={["Solid", "Dashed", "Dotted"]} />
+          </Group>
+        </Row>
+
+        <Group label="Icons">
+          <ImageCollection bind:data={$storyCards[editState.name].icons} />
+        </Group>
+
+        <Group label="Graphics">
+          <ImageCollection bind:data={$storyCards[editState.name].graphics} />
+        </Group>
+      </Foldout>
     {/if}
   </div>
 {/if}
@@ -95,6 +83,8 @@
   .dui-editor {
     display: flex;
     flex-direction: column;
-    gap: var(--dui-gap-medium);
+    gap: var(--dui-size-charlie);
+    font-family: var(--dui-font-interface);
+    font-size: var(--dui-font-size-charlie);
   }
 </style>
