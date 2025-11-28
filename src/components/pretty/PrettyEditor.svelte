@@ -13,6 +13,7 @@
     Storage,
     type StoryCard,
     Utils,
+    panelState,
   } from "@/shared";
 
   if (!Storage.hasStoryCard(editState.name)) {
@@ -39,6 +40,19 @@
   let state = $state("Hide");
   if ($settings.integratedEditor) state = "Show";
 </script>
+
+{#if panelState.visible}
+  <button
+    class="dui-editor-delete-button"
+    onclick={() => {
+      Storage.deleteStoryCard(editState.name);
+      panelState.tab = "World";
+    }}
+  >
+    <span class="dui-icon">delete</span>
+    DELETE
+  </button>
+{/if}
 
 {#if $adventures[Utils.getAdventureId()]?.storyCards?.[editState.name]}
   <div id={Config.ID_EDITOR} class="dui-editor">
@@ -99,5 +113,17 @@
     gap: var(--dui-size-charlie);
     font-family: var(--dui-font-interface);
     font-size: var(--dui-font-size-charlie);
+  }
+
+  .dui-editor-delete-button {
+    display: flex;
+    gap: var(--dui-size-alpha);
+    background-color: var(--dui-color-blue);
+    color: var(--dui-color-alpha);
+    border-radius: var(--dui-size-bravo);
+    padding: var(--dui-size-charlie) var(--dui-size-foxtrot);
+    margin-bottom: var(--dui-size-charlie);
+    text-transform: uppercase;
+    align-items: center;
   }
 </style>

@@ -27,7 +27,18 @@
     />
 
     {#each data as src}
-      <Image {src} aspect="1/1" buttons={[{ icon: "delete_forever" }]} />
+      <Image
+        {src}
+        aspect="1/1"
+        buttons={[
+          {
+            icon: "delete_forever",
+            onclick: () => {
+              data = data.filter((_, i) => i !== data.indexOf(src));
+            },
+          },
+        ]}
+      />
     {/each}
   </div>
 </div>

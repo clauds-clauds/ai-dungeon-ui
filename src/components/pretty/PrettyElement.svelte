@@ -1,7 +1,7 @@
 <!-- Pretty Element HERE! -->
 <script lang="ts">
   import { Storage, Utils, type StoryCard } from "@/shared";
-  import { adventures } from "@/shared/storage";
+  import { adventures, settings } from "@/shared/storage";
   import { circOut, quintOut } from "svelte/easing";
   import { fly } from "svelte/transition";
 
@@ -16,20 +16,25 @@
   let timeoutId: ReturnType<typeof setTimeout> | undefined;
 
   let storyCardData = $derived.by(() => {
-    const _ = $adventures;
-    const settings = Storage.readSettings();
-    const useCustomColors = storyCard.colorStyle === "Custom";
+    // Access the stores directly to ensure reactivity.
+    const currentAdventures = $adventures;
+    const currentSettings = $settings;
 
-    const graphic = Utils.wrapIndexData(storyCard.graphics, storyCard.currentGraphic);
-    const icon = Utils.wrapIndexData(storyCard.icons, storyCard.currentIcon);
-    const iconSize = settings.iconSize;
-    const color = useCustomColors ? storyCard.textColor : settings.textColor;
-    const borderColor = useCustomColors ? storyCard.borderColor : settings.borderColor;
-    const borderStyle = storyCard.borderStyle.toLowerCase();
-    const borderSize = settings.iconBorderThickness;
-    const borderRadius = settings.iconBorderRoundness / 2;
-    const tooltipWidth = settings.tooltipWidth;
-    const tooltipHeight = settings.tooltipHeight;
+    const adventureId = Utils.getAdventureId();
+    const liveCard = currentAdventures[adventureId]?.storyCards?.[storyCard.name] ?? storyCard;
+
+    const useCustomColors = liveCard.colorStyle === "Custom";
+
+    const graphic = Utils.wrapIndexData(liveCard.graphics, liveCard.currentGraphic);
+    const icon = Utils.wrapIndexData(liveCard.icons, liveCard.currentIcon);
+    const iconSize = currentSettings.iconSize;
+    const color = useCustomColors ? liveCard.textColor : currentSettings.textColor;
+    const borderColor = useCustomColors ? liveCard.borderColor : currentSettings.borderColor;
+    const borderStyle = liveCard.borderStyle.toLowerCase();
+    const borderSize = currentSettings.iconBorderThickness;
+    const borderRadius = currentSettings.iconBorderRoundness / 2;
+    const tooltipWidth = currentSettings.tooltipWidth;
+    const tooltipHeight = currentSettings.tooltipHeight;
 
     return {
       graphic,

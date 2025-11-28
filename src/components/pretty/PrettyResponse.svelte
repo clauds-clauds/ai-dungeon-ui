@@ -1,8 +1,7 @@
 <!-- Pretty Response HERE! -->
 <script lang="ts">
-  import { ResponseType, Storage, type StoryCard } from "@/shared";
+  import { PrettyElement, ResponseType, Storage, type StoryCard } from "@/shared";
   import { adventures, settings } from "@/shared/storage";
-  import PrettyElement from "./PrettyElement.svelte";
 
   interface PrettyResponse {
     text: string;
@@ -64,5 +63,12 @@
     font-weight: bold;
     color: var(--dui-color-orange);
     font-size: 14px;
+  }
+
+  .dui-response-travel-anchor {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    cursor: default;
   }
 </style>

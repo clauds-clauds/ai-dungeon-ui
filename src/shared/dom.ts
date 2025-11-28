@@ -1,4 +1,15 @@
-import { Config, Log, mount, panelState, PrettyEditor, PrettyPanel, PrettyResponse, Storage, Utils } from "@/shared";
+import {
+  Config,
+  Log,
+  mount,
+  travelState,
+  panelState,
+  PrettyEditor,
+  PrettyPanel,
+  PrettyResponse,
+  Storage,
+  Utils,
+} from "@/shared";
 import { ResponseType } from "@/shared";
 
 /* DOM HERE! */
@@ -78,6 +89,10 @@ export class DUIDom {
     response.setAttribute(Config.ATTRIBUTE_RESPONSE_PRETTIFIED, "true");
     const text = response.textContent;
     response.textContent = "";
+
+    // If the response is an action type, then forward it so it can be used by the traveller system.
+    if (responseType === ResponseType.Action) travelState.text = text;
+
     mount(PrettyResponse, { target: response, props: { text, responseType } });
   }
 

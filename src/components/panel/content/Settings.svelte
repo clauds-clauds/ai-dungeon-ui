@@ -27,8 +27,8 @@
     <Slider bind:value={$settings.iconBorderThickness} min={0} max={16} />
   </Group>
 
-  <Group label="Icon Border Opacity (%)">
-    <Slider bind:value={$settings.iconBorderOpacity} />
+  <Group label="Icon Border Roundness (%)">
+    <Slider bind:value={$settings.iconBorderRoundness} />
   </Group>
 </Foldout>
 
@@ -72,6 +72,14 @@
       bind:value={$settings.travellerTriggers}
       placeholder="Enter comma separated traveller triggers! (Ex. travel to)"
     />
+  </Group>
+
+  <Group label="Traveller Width">
+    <Slider bind:value={$settings.travellerWidth} min={0} max={2048} step={32} />
+  </Group>
+
+  <Group label="Traveller Height">
+    <Slider bind:value={$settings.travellerHeight} min={0} max={2048} step={32} />
   </Group>
 </Foldout>
 

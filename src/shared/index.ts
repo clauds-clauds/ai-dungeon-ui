@@ -16,7 +16,7 @@ export { ResponseType } from "./types";
 export { tabTemplates } from "./templates";
 
 // States HERE!
-export { panelState, editState } from "./state.svelte";
+export { panelState, editState, travelState } from "./state.svelte";
 
 // Classes HERE!
 export { DUIConfig as Config } from "./config";

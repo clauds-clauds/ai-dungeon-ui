@@ -1,1 +1,5 @@
-This is the world contents!
+<script>
+  import Browser from "@/components/generic/Browser.svelte";
+</script>
+
+<Browser />
