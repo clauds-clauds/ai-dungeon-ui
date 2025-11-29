@@ -1,3 +1,5 @@
+import type { StoryCard } from "./types";
+
 /* State HERE! */
 export const panelState = $state({
   visible: false,
@@ -11,4 +13,8 @@ export const editState = $state({
 export const travelState = $state({
   text: "",
   graphic: "",
+});
+
+export const storyState = $state({
+  map: {} as Record<string, StoryCard>,
 });

@@ -1,6 +1,6 @@
 // Imports HERE!
 import type { StoryCard, Writable } from "@/shared";
-import { writable, Log, get } from "@/shared";
+import { writable, Log, get, storyState } from "@/shared";
 import type { Adventure } from "./types";
 import { DUIUtils as Utils } from "./utils";
 
@@ -59,9 +59,6 @@ export class DUIStorage {
       // Apply the settings.
       if (result.settings) this.settings.set({ ...this.settings, ...result.settings });
 
-      // Apply the story cards.
-      // if (result.storyCards) this.storyCards.set({ ...this.storyCards, ...result.storyCards });
-
       // Apply the adventures.
       if (result.adventures) this.adventures.set({ ...this.adventures, ...result.adventures });
 
@@ -82,10 +79,12 @@ export class DUIStorage {
 
     let adventureTimeout: ReturnType<typeof setTimeout>;
     this.adventures.subscribe((value) => {
+      // Optimize immediately, otherwise you get stale stuff again.
+      this.optimizeStoryCards();
+
       clearTimeout(adventureTimeout);
       adventureTimeout = setTimeout(() => {
         chrome.storage.local.set({ adventures: value });
-        this.optimizeStoryCards();
       }, 200);
     });
   }
@@ -103,6 +102,7 @@ export class DUIStorage {
     // If there is no adventure or cards then clear the map and return.
     if (!adventure || !adventure.storyCards) {
       this.map = {};
+      storyState.map = {};
       return;
     }
 
@@ -122,6 +122,7 @@ export class DUIStorage {
     }
 
     this.map = newMap;
+    storyState.map = newMap;
     Log.success(`Optimized ${Object.keys(newMap).length} triggers!`);
   }
 
@@ -138,7 +139,6 @@ export class DUIStorage {
     const adventure = this.getAdventureData();
     if (!adventure || !adventure.storyCards) return;
 
-    // @ts-ignore
     const storyCard: StoryCard = adventure.storyCards[cachedName];
     if (!storyCard) return;
 
