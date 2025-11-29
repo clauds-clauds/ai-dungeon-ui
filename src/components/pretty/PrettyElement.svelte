@@ -66,7 +66,7 @@
   {#if storyCardData.graphic && hovering}
     <button
       class="dui-element-graphic"
-      transition:fly={{ duration: 300, easing: circOut, opacity: 0 }}
+      transition:fly={{ duration: 300, y: -64, easing: circOut, opacity: 0 }}
       onmouseenter={onEnter}
       onclick={(event: MouseEvent) => {
         event.stopPropagation();

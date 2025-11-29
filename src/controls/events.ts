@@ -13,7 +13,11 @@ class DUIEvents {
 
   private static _cachedStoryCard: HTMLElement | null;
   private static _cachedOutput: HTMLElement | null;
+  private static _cachedAdventureId: string = "";
 
+  /**
+   *
+   */
   static async onStart(): Promise<void> {
     // Load storage first, otherwise everything explodes.
     Storage.load();
@@ -35,19 +39,47 @@ class DUIEvents {
     this._domObserver.observe(document, { childList: true, subtree: true });
   }
 
+  /**
+   *
+   * @param records
+   * @returns
+   */
   static onDomChange(records: MutationRecord[]) {
-    if (Utils.getAdventureId().length === 0) {
+    const adventureId = Utils.getAdventureId();
+
+    // For when leaving the adventure.
+    if (adventureId === "") {
       this._outputObserver.disconnect();
       this._cachedOutput = null;
+      this._cachedAdventureId = "";
       return;
     }
 
+    // For when the adventure has changed.
+    if (adventureId !== this._cachedAdventureId) {
+      Storage.optimizeStoryCards();
+      this._cachedAdventureId = adventureId;
+      this._outputObserver.disconnect();
+      this._cachedOutput = null;
+    }
+
+    // For validating the cached output thingy.
+    if (this._cachedOutput && !this._cachedOutput.isConnected) {
+      this._outputObserver.disconnect();
+      this._cachedOutput = null;
+    }
+
+    // This injects the `DEV PANEL` thingy in the sidebar/flamey thing whatever.
     Dom.injectButton();
 
     if (!this._cachedOutput) {
       this._cachedOutput = document.getElementById(Storage.readSettings().outputId); // Try to find it, then connect.
       if (this._cachedOutput) {
         this._outputObserver.observe(this._cachedOutput, { childList: true, subtree: true });
+        const responses = Array.from(
+          this._cachedOutput.querySelectorAll(Storage.readSettings().responseSelector)
+        ) as HTMLElement[];
+        Dom.manipulateResponses(responses);
       }
     }
 
@@ -67,6 +99,10 @@ class DUIEvents {
     }
   }
 
+  /**
+   *
+   * @param records
+   */
   static onOutputChange(records: MutationRecord[]) {
     for (const record of records) {
       for (const node of record.addedNodes) {

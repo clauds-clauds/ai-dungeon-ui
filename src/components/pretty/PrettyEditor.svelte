@@ -15,6 +15,8 @@
     Utils,
     panelState,
   } from "@/shared";
+  import Note from "../generic/Note.svelte";
+  import Color from "../generic/Color.svelte";
 
   if (!Storage.hasStoryCard(editState.name)) {
     // Note to self: If there is ever an issue where people create new cards and they suddenly already have content, it is due to this below.
@@ -41,7 +43,7 @@
   if ($settings.integratedEditor) state = "Show";
 </script>
 
-{#if panelState.visible}
+{#if panelState.visible && Utils.getAdventureId() !== ""}
   <button
     class="dui-editor-delete-button"
     onclick={() => {
@@ -102,6 +104,22 @@
           <ImageCollection bind:data={$adventures[Utils.getAdventureId()].storyCards[editState.name].graphics} />
         </Group>
       </Foldout>
+
+      {#if $adventures[Utils.getAdventureId()].storyCards[editState.name].colorStyle === "Custom"}
+        <Foldout icon="format_paint" label="Colors" blue={true}>
+          <Group label="Text Color">
+            <Note description="This is a very fancy placeholder...">
+              <Color bind:value={$adventures[Utils.getAdventureId()].storyCards[editState.name].textColor} />
+            </Note>
+          </Group>
+
+          <Group label="Border Color">
+            <Note description="This is a very fancy placeholder...">
+              <Color bind:value={$adventures[Utils.getAdventureId()].storyCards[editState.name].borderColor} />
+            </Note>
+          </Group>
+        </Foldout>
+      {/if}
     {/if}
   </div>
 {/if}

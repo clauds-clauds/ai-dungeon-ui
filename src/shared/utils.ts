@@ -57,6 +57,15 @@ export class DUIUtils {
     return currentElement;
   }
 
+  static getIconByType(type: string): string {
+    const map: Record<string, string> = {
+      Character: "owl",
+      Location: "explore",
+    };
+
+    return map[type] ?? "build";
+  }
+
   /**
    *
    * @param event

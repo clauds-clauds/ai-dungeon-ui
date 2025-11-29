@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { editState, panelState, type StoryCard } from "@/shared";
+  import { editState, panelState, Utils, type StoryCard } from "@/shared";
 
   interface Preview {
     storyCard: StoryCard;
@@ -20,7 +20,7 @@
 >
   {#if !storyCard.graphics || storyCard.graphics.length === 0}
     <div class="dui-preview-icon">
-      <span class="dui-icon">skull</span>
+      <span class="dui-icon">{Utils.getIconByType(storyCard.type ?? "missing")}</span>
     </div>
   {/if}
   <div class="dui-preview-footer">
