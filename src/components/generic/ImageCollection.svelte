@@ -17,7 +17,7 @@
         {
           icon: "add",
           onclick: async () => {
-            const dataUrl = await Utils.requestFileData("image");
+            const dataUrl = await Utils.selectImage();
             if (!dataUrl) return;
             data = [...(data ?? []), dataUrl];
           },
