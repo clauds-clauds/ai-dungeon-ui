@@ -185,7 +185,7 @@
     }
 
     img {
-      width: 96px;
+      width: 64px;
       aspect-ratio: 1/1;
       object-fit: cover;
       transition: all 200ms ease-in-out;
