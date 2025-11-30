@@ -32,6 +32,7 @@ const defaultSettings = {
   textColor: "#f8ae2c",
   borderColor: "#f8ae2c",
   paintLimit: 4,
+  paintPerformanceMode: true,
 };
 
 // Export the default settings so they can be used.

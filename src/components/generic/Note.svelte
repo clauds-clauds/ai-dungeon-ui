@@ -2,14 +2,18 @@
 <script lang="ts">
   interface Note {
     description?: string;
+    important?: string;
     children: any;
   }
 
-  let { description = "This is a note which explains so much!", children }: Note = $props();
+  let { description = "This is a note which explains so much!", important = "", children }: Note = $props();
 </script>
 
 <div class="dui-note">
-  <span class="dui-note-description">{description}</span>
+  <div class="dui-note-content">
+    <span class="dui-note-description">{description}</span>
+    <span class="dui-note-important">{important}</span>
+  </div>
   {@render children?.()}
 </div>
 
@@ -22,11 +26,22 @@
     color: var(--dui-color-juliett);
   }
 
+  .dui-note-content {
+    display: flex;
+    flex-direction: column;
+  }
+
   .dui-note-description {
     min-width: 0;
     white-space: normal;
     overflow-wrap: anywhere;
     max-width: 75%;
     font-size: var(--dui-font-size-charlie);
+  }
+
+  .dui-note-important {
+    color: var(--dui-color-blue);
+    font-weight: bold;
+    font-size: var(--dui-font-size-bravo);
   }
 </style>

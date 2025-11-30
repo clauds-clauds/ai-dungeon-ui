@@ -4,7 +4,7 @@
     checked?: boolean;
   }
 
-  let { checked = $bindable(false) }: Toggle = $props();
+  let { checked = $bindable() }: Toggle = $props();
 </script>
 
 <label class="dui-toggle">

@@ -61,8 +61,10 @@
 </Foldout>
 
 <Foldout icon="dialogs" label="Responses" description="Customize the responses!">
-  <Group label="Paint Limit">
-    <Slider bind:value={$settings.paintLimit} min={0} max={128} />
+  <Group label="Performance Mode">
+    <Note description="Only paints the last response after loading." important="Improves performance for mobile devices!">
+      <Toggle bind:checked={$settings.paintPerformanceMode} />
+    </Note>
   </Group>
 </Foldout>
 

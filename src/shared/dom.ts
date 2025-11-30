@@ -2,6 +2,7 @@ import {
   Config,
   Log,
   mount,
+  extensionState,
   travelState,
   panelState,
   PrettyEditor,
@@ -131,15 +132,33 @@ export class DUIDom {
    * @param responses
    */
   static manipulateResponses(responses: HTMLElement[]) {
+    const lastOnly = Storage.readSettings().paintPerformanceMode;
+
+    // Return if the responses are invalid.
+    if (responses.length === 0) return;
+
     for (const response of responses) {
       if (response.hasAttribute(Config.ATTRIBUTE_RESPONSE_PRETTIFIED)) continue;
       const actionResponse = response.querySelector(Storage.readSettings().responseActionId);
-      if (actionResponse) {
-        this.injectResponse(actionResponse as HTMLElement, ResponseType.Action);
+      if (actionResponse && !lastOnly) {
+        if ((lastOnly && extensionState.loadFinished) || !lastOnly) {
+          this.injectResponse(actionResponse as HTMLElement, ResponseType.Action);
+        }
       } else {
+        // The label is how the type can be determined.
         const label = response.getAttribute("aria-label");
-        this.injectResponse(response, label && label.startsWith("Last action:") ? ResponseType.Last : ResponseType.Other);
+        const type = label && label.startsWith("Last action:") ? ResponseType.Last : ResponseType.Other;
+
+        // Format the story and last action types.
+        if (type === ResponseType.Last || !lastOnly) {
+          this.injectResponse(response, type);
+          extensionState.loadFinished = true;
+        }
       }
     }
+
+    // Log some stuff.
+    Log.info(`Has load been finished? ${extensionState.loadFinished}`);
+    Log.info(`How many responses were sent? ` + responses.length);
   }
 }

@@ -18,3 +18,7 @@ export const travelState = $state({
 export const storyState = $state({
   map: {} as Record<string, StoryCard>,
 });
+
+export const extensionState = $state({
+  loadFinished: false,
+});
