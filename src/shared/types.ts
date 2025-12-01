@@ -6,7 +6,7 @@ export interface Pill {
 export interface Tab {
   icon?: string;
   id?: string;
-  content?: any;
+  page?: any;
   pills: Pill[];
   hidden?: boolean;
 }

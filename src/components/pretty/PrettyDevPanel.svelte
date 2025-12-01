@@ -1,14 +1,34 @@
 <script lang="ts">
   import { extensionState } from "@/shared/state.svelte";
   import { tabs } from "@/shared/templates";
+  import PrettyTopbar from "./PrettyTopbar.svelte";
+  import PrettyPillbar from "./PrettyPillbar.svelte";
 
   let pillbarActive = $derived(tabs[extensionState.currentTab].pills);
-  let Content = $derived(tabs[extensionState.currentTab].content);
+  let Page = $derived(tabs[extensionState.currentTab].page);
 </script>
 
-<div class="dui-backdrop">
-  <div class="dui-dev-panel"></div>
-</div>
+{#if !extensionState.showDevPanel}
+  <div class="dui-backdrop">
+    <div class="dui-dev-panel">
+      <PrettyTopbar />
+
+      {#if pillbarActive}
+        <div class="dui-pill-content">
+          <PrettyPillbar />
+        </div>
+
+        <div class="dui-content">
+          <div class="dui-content-wrapper">
+            {#if Page}
+              <Page />
+            {/if}
+          </div>
+        </div>
+      {/if}
+    </div>
+  </div>
+{/if}
 
 <style lang="scss">
   .dui-backdrop {
@@ -51,7 +71,7 @@
   }
 
   .dui-content-wrapper {
-    padding: var(--dui-padding-medium);
+    padding: 0px var(--dui-padding-medium);
     display: flex;
     flex-direction: column;
     gap: var(--dui-gap-small);

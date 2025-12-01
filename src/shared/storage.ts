@@ -5,6 +5,9 @@ import { Utils } from "./utils";
 import { extensionState } from "./state.svelte";
 
 const defaultSettings = {
+  // Highlight:
+  highlightColor: "#f8ae2c",
+
   // Icons:
   iconSize: 28,
   iconBorderSize: 1,
@@ -12,17 +15,26 @@ const defaultSettings = {
   iconBorderColor: "#f8ae2c",
 
   // Dev:
+  devModeEnabled: false,
   devOutputId: "gameplay-output",
   devResponseId: "transition-opacity",
   devResponseActionId: "span#action-text",
   devResponseSelector: "#transition-opacity",
   devStoryCardSelector: "input[aria-labelledby='scTitleLabel']",
 
+  // Performance:
+  performanceModeEnabled: false,
+
   // Markdown:
-  markdownBold: "\\*\\*(.*?)\\*\\*",
-  markdownItalic: "\\*(.*?)\\*",
-  markdownUnderline: "__(.*?)__",
-  markdownStrikethrough: "~~(.*?)~~",
+  formatterEnabled: true,
+  formatterBold: "\\*\\*(.*?)\\*\\*",
+  formatterItalic: "\\*(.*?)\\*",
+  formatterUnderline: "__(.*?)__",
+  formatterStrikethrough: "~~(.*?)~~",
+
+  // Traveller:
+  travellerEnabled: false,
+  travellerTriggers: "",
 
   // Generation:
   generationEnabled: false,
@@ -130,3 +142,6 @@ export class Storage {
     });
   }
 }
+
+export const settings = Storage.settings;
+export const adventures = Storage.adventures;

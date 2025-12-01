@@ -1,10 +1,17 @@
 <script lang="ts">
-  import PrettyTab from "./PrettyTab.svelte";
+  import { tabs } from "@/shared/templates";
+  import Tab from "../generic/Tab.svelte";
 </script>
 
 <div class="dui-topbar">
-  <PrettyTab />
-  <div class="dui-content"></div>
+  <div class="dui-content">
+    {#each Object.keys(tabs) as key}
+      {#if !tabs[key].hidden}
+        <Tab icon={tabs[key].icon} label={key} />
+      {/if}
+    {/each}
+  </div>
+  <Tab icon="close" exit={true} />
 </div>
 
 <style lang="scss">

@@ -91,4 +91,13 @@
   direction: ltr;
   font-feature-settings: "liga";
   -webkit-font-smoothing: antialiased;
+  font-variation-settings: "FILL" 1;
+}
+
+.dui-attention {
+  box-shadow: 0 0 0 2px transparent;
+}
+
+.dui-attention:focus {
+  box-shadow: 0 0 0 2px var(--dui-color-theme);
 }
