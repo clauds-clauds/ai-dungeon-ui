@@ -20,7 +20,7 @@
         <Button
           icon="delivery_truck_speed"
           onclick={async () => {
-            const adventure = await Utils.importAdventure();
+            const adventure = await Storage.importAdventure();
             if (adventure) Storage.merge(adventure);
           }}
         />
