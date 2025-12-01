@@ -27,6 +27,12 @@
         <Toggle bind:checked={$settings.travellerEnabled} />
       </Note>
     </Group>
+
+    <Group label="Image Generation">
+      <Note text="Toggle whether image generation integration is enabled!">
+        <Toggle bind:checked={$settings.generationEnabled} />
+      </Note>
+    </Group>
   </Foldout>
 
   <Foldout icon="activity_zone" label="Highlight" description="Customize how highlights look!">
@@ -109,6 +115,14 @@
 
       <Group label="TRAVELLER HEIGHT">
         <Slider bind:value={$settings.travellerHeight} min={0} max={1024} step={32} />
+      </Group>
+    </Foldout>
+  {/if}
+
+  {#if $settings.generationEnabled}
+    <Foldout icon="camera" label="Image Generation" description="Enter your OpenRouter API key here!">
+      <Group label="API key">
+        <Text bind:value={$settings.generationApiKey} />
       </Group>
     </Foldout>
   {/if}

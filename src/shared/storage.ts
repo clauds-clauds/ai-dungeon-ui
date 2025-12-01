@@ -45,6 +45,8 @@ const defaultSettings = {
 
   // Generation:
   generationEnabled: false,
+  generationAspectRatio: "1:1",
+  generationModel: "google/gemini-2.5-flash-image",
   generationApiKey: "",
 };
 

@@ -9,4 +9,6 @@ export const extensionState = $state({
   travellerStoryCard: "",
   map: {} as Record<string, StoryCard>,
   loadFinished: false,
+  generatingImage: false,
+  generatedImage: "",
 });

@@ -13,9 +13,13 @@
   import type { StoryCard } from "@/shared/types";
   import { Utils } from "@/shared/utils";
   import Button from "../generic/Button.svelte";
+  import ImageGenerator from "../generic/ImageGenerator.svelte";
 
   if (!Storage.contains(extensionState.storyCard)) {
-    Storage.upsert(Utils.createNewStoryCard());
+    const card: StoryCard = Utils.createNewStoryCard();
+    card.name = "TEMP";
+    extensionState.storyCard = "TEMP";
+    Storage.upsert(card);
   }
 </script>
 
@@ -34,7 +38,7 @@
     </Group>
   {/if}
 
-  <Group label="INTEGRATED EDITOR">
+  <Group label="EDITOR">
     <Foldout icon="note_stack" label="Info" description="Customize the basics!">
       <Group label="CUSTOM COLOR">
         <Note text="Enable this to unlock custom coloring options!">
@@ -72,6 +76,17 @@
       <Group label="Graphics">
         <ImageArray bind:data={$adventures[Utils.getAdventureId()].storyCards[extensionState.storyCard].graphics} />
       </Group>
+    </Foldout>
+
+    <Foldout icon="wand_stars" label="Image Generation">
+      <ImageGenerator
+        onapplyclick={() => {
+          if (Utils.isStringInvalid(extensionState.generatedImage)) return;
+          const storyCard: StoryCard = $adventures[Utils.getAdventureId()].storyCards[extensionState.storyCard];
+          storyCard.graphics = [...storyCard.graphics, extensionState.generatedImage];
+          Storage.upsert(storyCard);
+        }}
+      />
     </Foldout>
 
     {#if $adventures[Utils.getAdventureId()].storyCards[extensionState.storyCard].useCustomColor}

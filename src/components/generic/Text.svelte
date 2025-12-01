@@ -4,12 +4,26 @@
     value?: string;
     placeholder?: string;
     readonly?: boolean;
+    area?: boolean;
   }
 
-  let { value = $bindable(), placeholder = "This is a placeholder!", readonly = false }: Text = $props();
+  let { value = $bindable(), placeholder = "This is a placeholder!", readonly = false, area = false }: Text = $props();
 </script>
 
-<input class="dui-text dui-attention" class:readonly type="text" autocomplete="off" bind:value {placeholder} {readonly} />
+{#if area}
+  <textarea
+    id="dui-textarea"
+    class="dui-text dui-attention"
+    class:readonly
+    autocomplete="off"
+    bind:value
+    {placeholder}
+    {readonly}
+    wrap="soft"
+  ></textarea>
+{:else}
+  <input class="dui-text dui-attention" class:readonly type="text" autocomplete="off" bind:value {placeholder} {readonly} />
+{/if}
 
 <style lang="scss">
   .dui-text {
@@ -24,6 +38,15 @@
     &.readonly {
       pointer-events: none;
       color: var(--dui-color-core-delta);
+    }
+  }
+
+  #dui-textarea {
+    resize: vertical;
+    scrollbar-width: none;
+
+    &.readonly {
+      resize: none;
     }
   }
 
