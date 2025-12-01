@@ -21,6 +21,7 @@ export type StoryCard = {
   name: string;
   type: string;
   triggers: string;
+  limit: string;
 
   // Colors:
   useCustomColor: boolean;
@@ -36,3 +37,9 @@ export type StoryCard = {
   graphics: string[];
   currentGraphic: number;
 };
+
+export enum ResponseType {
+  Action = "Action",
+  Last = "Last",
+  Other = "Story",
+}

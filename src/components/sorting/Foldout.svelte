@@ -18,7 +18,7 @@
     <div class="dui-title-content">
       <span class="dui-label">
         <span class="dui-icon">{icon}</span>
-        {label?.toUpperCase()}
+        {label}
       </span>
       {#if description !== ""}
         <span class="dui-description">{description}</span>
@@ -46,6 +46,7 @@
     font-size: var(--dui-font-size-medium);
     background-color: var(--dui-color-core-beta);
     color: var(--dui-color-core-delta);
+    font-family: var(--dui-font-interface);
   }
 
   .dui-expansion {

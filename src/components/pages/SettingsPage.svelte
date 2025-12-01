@@ -13,7 +13,7 @@
 </script>
 
 {#if extensionState.currentSubtab === "GENERAL"}
-  <Foldout icon="switch_access" label="FEATURES" description="Customize which features to enable!">
+  <Foldout icon="switch_access" label="Features" description="Customize which features to enable!">
     <Group label="Formatter">
       <Note text="Toggle whether special formatting is applied to responses!">
         <Toggle bind:checked={$settings.formatterEnabled} />
@@ -29,7 +29,7 @@
     </Group>
   </Foldout>
 
-  <Foldout icon="activity_zone" label="HIGHLIGHT" description="Customize how highlights look!">
+  <Foldout icon="activity_zone" label="Highlight" description="Customize how highlights look!">
     <Group label="ICON SIZE">
       <Slider min={8} max={40} bind:value={$settings.iconSize} />
     </Group>
@@ -43,7 +43,21 @@
     </Group>
   </Foldout>
 
-  <Foldout icon="brush" label="Color" description="Customize the coloring of borders and highlights!">
+  <Foldout icon="tooltip" label="Tooltip" description="Customize the appearance of the tooltip!">
+    <Group label="TOOLTIP WIDTH">
+      <Slider bind:value={$settings.tooltipWidth} min={0} max={1024} step={32} />
+    </Group>
+
+    <Group label="TOOLTIP HEIGHT">
+      <Slider bind:value={$settings.tooltipHeight} min={0} max={1024} step={32} />
+    </Group>
+
+    <Group label="TOOLTIP HIDE DELAY">
+      <Slider bind:value={$settings.tooltipHideDelay} min={50} max={5000} step={50} />
+    </Group>
+  </Foldout>
+
+  <Foldout icon="format_paint" label="Color" description="Customize the coloring of borders and highlights!">
     <Group label="TEXT COLOR">
       <Note text="Customize the text color of highlights! Only used if the card is using the `Vanilla` coloring mode!">
         <Color bind:value={$settings.highlightColor} />
@@ -62,7 +76,7 @@
   {#if $settings.formatterEnabled}
     <Foldout
       icon="brand_family"
-      label="FORMATTER"
+      label="Formatter"
       description="Customize which regular expressions to use for the special formatting!"
     >
       <Group label="BOLD">
@@ -84,16 +98,24 @@
   {/if}
 
   {#if $settings.travellerEnabled}
-    <Foldout icon="hiking" label="TRAVELLER" description="Customize how the traveller system works!">
+    <Foldout icon="hiking" label="Traveller" description="Customize how the traveller system works!">
       <Group label="TRIGGERS">
         <Text bind:value={$settings.travellerTriggers} />
+      </Group>
+
+      <Group label="TRAVELLER WIDTH">
+        <Slider bind:value={$settings.travellerWidth} min={0} max={1024} step={32} />
+      </Group>
+
+      <Group label="TRAVELLER HEIGHT">
+        <Slider bind:value={$settings.travellerHeight} min={0} max={1024} step={32} />
       </Group>
     </Foldout>
   {/if}
 {/if}
 
 {#if extensionState.currentSubtab === "DEVELOPER"}
-  <Foldout icon="developer_board" label="TOOLS" description="View some handy debugging features!">
+  <Foldout icon="developer_board" label="Tools" description="View some handy debugging features!">
     <Group label="DEVELOPER MODE">
       <Note text="Enable this if you want to see response information and console logs!">
         <Toggle bind:checked={$settings.devModeEnabled} />
@@ -107,7 +129,7 @@
     </Group>
   </Foldout>
 
-  <Foldout icon="bug_report" label="DEBUG" description="View debugging information about the current adventure!">
+  <Foldout icon="bug_report" label="Debug" description="View debugging information about the current adventure!">
     <Group label="Adventure ID">
       <Text value={Utils.getAdventureId()} placeholder="Are you sure an adventure is loaded?" readonly={true} />
     </Group>
@@ -117,7 +139,7 @@
     </Group>
   </Foldout>
 
-  <Foldout icon="skull" label="DANGER ZONE" description="View some scary buttons!">
+  <Foldout icon="skull" label="Danger Zone" description="View some scary buttons!">
     <Group label="RESET SETTINGS">
       <Note text="Click this button to reset all the settings!">
         <Button icon="delete" label="" dangerous={true} />

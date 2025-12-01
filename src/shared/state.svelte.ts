@@ -5,5 +5,8 @@ export const extensionState = $state({
   showDevPanel: false,
   currentTab: Object.keys(tabs)[0],
   currentSubtab: "",
+  storyCard: "",
+  travellerStoryCard: "",
   map: {} as Record<string, StoryCard>,
+  loadFinished: false,
 });

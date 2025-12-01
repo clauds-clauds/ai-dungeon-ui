@@ -22,6 +22,11 @@ const defaultSettings = {
   devResponseSelector: "#transition-opacity",
   devStoryCardSelector: "input[aria-labelledby='scTitleLabel']",
 
+  // Tooltip:
+  tooltipWidth: 512,
+  tooltipHeight: 512,
+  tooltipHideDelay: 200,
+
   // Performance:
   performanceModeEnabled: false,
 
@@ -35,6 +40,8 @@ const defaultSettings = {
   // Traveller:
   travellerEnabled: false,
   travellerTriggers: "",
+  travellerWidth: 512,
+  travellerHeight: 512,
 
   // Generation:
   generationEnabled: false,
@@ -79,6 +86,80 @@ export class Storage {
       adventureTimeout = setTimeout(() => {
         chrome.storage.local.set({ adventures: value });
       }, 200);
+    });
+  }
+
+  static exportAdventure() {
+    const adventure = Storage.getCurrentAdventureData();
+    if (Utils.isAdventureInvalid(adventure)) return;
+
+    const data = JSON.stringify(adventure, null, 2);
+    const blob = new Blob([data], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${Utils.getAdventureId()}_${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  static importAdventure(): Promise<Adventure | null> {
+    return new Promise((resolve, reject) => {
+      const input = document.createElement("input");
+      input.type = "file";
+      input.accept = ".json,application/json";
+      input.style.display = "none";
+
+      input.onchange = (e) => {
+        const target = e.target as HTMLInputElement;
+        const file = target.files?.[0];
+
+        if (!file) {
+          document.body.removeChild(input);
+          resolve(null);
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (readerEvent) => {
+          try {
+            const result = readerEvent.target?.result as string;
+            const adventure = JSON.parse(result) as Adventure;
+            document.body.removeChild(input);
+            resolve(adventure);
+          } catch (error) {
+            document.body.removeChild(input);
+            reject(error);
+          }
+        };
+        reader.onerror = (err) => {
+          document.body.removeChild(input);
+          reject(err);
+        };
+        reader.readAsText(file);
+      };
+
+      document.body.appendChild(input);
+      input.click();
+    });
+  }
+
+  static merge(adventure: Adventure) {
+    const adventureId = Utils.getAdventureId();
+    this.adventures.update((adventures) => {
+      if (!adventures[adventureId]) adventures[adventureId] = { storyCards: {} };
+      adventures[adventureId].storyCards = { ...adventures[adventureId].storyCards, ...adventure.storyCards };
+      return adventures;
+    });
+  }
+
+  static replace(adventure: Adventure) {
+    const adventureId = Utils.getAdventureId();
+    this.adventures.update((adventures) => {
+      adventures[adventureId] = adventure;
+      return adventures;
     });
   }
 

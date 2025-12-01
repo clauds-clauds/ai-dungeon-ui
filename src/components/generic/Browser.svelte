@@ -3,14 +3,20 @@
   import { adventures, Storage } from "@/shared/storage";
   import Card from "./Card.svelte";
   import { Utils } from "@/shared/utils";
+  import { extensionState } from "@/shared/state.svelte";
 </script>
 
 <div class="dui-browser">
   <div class="dui-browser-grid">
-    <Card placeholder={true} />
     {#if $adventures[Utils.getAdventureId()]}
       {#each Object.values(Storage.getCurrentAdventureData().storyCards) as storyCard}
-        <Card {storyCard} />
+        <Card
+          {storyCard}
+          onclick={() => {
+            extensionState.storyCard = storyCard.name;
+            extensionState.currentTab = "EDITOR";
+          }}
+        />
       {/each}
     {/if}
   </div>
@@ -26,6 +32,7 @@
 
   .dui-browser-grid {
     display: grid;
+    flex: 1;
     gap: var(--dui-gap-medium);
     align-items: center;
     grid-template-columns: repeat(2, 1fr);

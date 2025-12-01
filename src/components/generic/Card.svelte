@@ -32,7 +32,6 @@
   {#if !placeholder}
     <div class="dui-card-footer">
       <span class="dui-card-name">{storyCard?.name || "Unnamed"}</span>
-      <span class="dui-card-type">{storyCard?.type || "Unknown"}</span>
     </div>
   {/if}
 </button>

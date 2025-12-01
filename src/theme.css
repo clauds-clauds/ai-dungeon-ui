@@ -98,6 +98,10 @@
   box-shadow: 0 0 0 2px transparent;
 }
 
+.dui-attention:hover {
+  box-shadow: 0 0 0 2px var(--dui-color-core-delta);
+}
+
 .dui-attention:focus {
   box-shadow: 0 0 0 2px var(--dui-color-theme);
 }

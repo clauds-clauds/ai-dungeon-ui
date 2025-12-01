@@ -8,9 +8,14 @@
   let Page = $derived(tabs[extensionState.currentTab].page);
 </script>
 
-{#if !extensionState.showDevPanel}
+{#if extensionState.showDevPanel}
   <div class="dui-backdrop">
-    <div class="dui-dev-panel">
+    <div
+      class="dui-dev-panel"
+      onwheel={(ev: WheelEvent) => ev.stopPropagation()}
+      ontouchstart={(ev: TouchEvent) => ev.stopPropagation()}
+      ontouchmove={(ev: TouchEvent) => ev.stopPropagation()}
+    >
       <PrettyTopbar />
 
       {#if pillbarActive}
