@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { Storage, Utils } from "@/shared";
   import { adventures } from "@/shared/storage";
   import Preview from "./Preview.svelte";
@@ -7,7 +7,7 @@
 {#if $adventures[Utils.getAdventureId()]}
   <div class="dui-browser">
     <div class="dui-browser-grid">
-      {#each Object.values(Storage.getAdventureData().storyCards) as storyCard}
+      {#each Object.values(Storage.getAdventureData()!.storyCards) as storyCard}
         <Preview {storyCard} />
       {/each}
     </div>

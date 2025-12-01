@@ -7,7 +7,7 @@
     area?: boolean;
   }
 
-  let { value = $bindable(""), placeholder = "This is a placeholder!", readonly = false, area = false }: TextField = $props();
+  let { value = $bindable(), placeholder = "This is a placeholder!", readonly = false, area = false }: TextField = $props();
 </script>
 
 {#if area}

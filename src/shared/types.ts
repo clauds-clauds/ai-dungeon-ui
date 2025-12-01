@@ -23,6 +23,8 @@ export type StoryCard = {
 
 export type GenericButton = {
   icon: string;
+  label?: string;
+  danger?: boolean;
   onclick?: () => void;
 };
 

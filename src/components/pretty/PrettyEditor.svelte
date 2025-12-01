@@ -17,6 +17,7 @@
   } from "@/shared";
   import Note from "../generic/Note.svelte";
   import Color from "../generic/Color.svelte";
+  import Button from "../generic/Button.svelte";
 
   if (!Storage.hasStoryCard(editState.name)) {
     // Note to self: If there is ever an issue where people create new cards and they suddenly already have content, it is due to this below.
@@ -44,25 +45,40 @@
 </script>
 
 {#if panelState.visible && Utils.getAdventureId() !== ""}
-  <button
-    class="dui-editor-delete-button"
-    onclick={() => {
-      Storage.deleteStoryCard(editState.name);
-      panelState.tab = "World";
-    }}
-  >
-    <span class="dui-icon">delete</span>
-    DELETE
-  </button>
+  <Row>
+    <Group label="DELETE">
+      <Button
+        data={{
+          icon: "delete",
+          danger: true,
+          onclick: () => {
+            Storage.deleteStoryCard(editState.name);
+            panelState.tab = "World";
+          },
+        }}
+      />
+    </Group>
+
+    <Group label="DEBUG">
+      <Button
+        data={{
+          icon: "bug_report",
+          onclick: () => {},
+        }}
+      />
+    </Group>
+  </Row>
 {/if}
 
 {#if $adventures[Utils.getAdventureId()]?.storyCards?.[editState.name]}
   <div id={Config.ID_EDITOR} class="dui-editor">
-    <Group label="EXTRA OPTIONS">
-      <Select options={["Hide", "Show"]} bind:value={state} />
-    </Group>
+    {#if !panelState.visible}
+      <Group label="EXTRA OPTIONS">
+        <Select options={["Hide", "Show"]} bind:value={state} />
+      </Group>
+    {/if}
 
-    {#if state !== "Hide"}
+    {#if state !== "Hide" || panelState.visible}
       <Row>
         <Group label="Color">
           <Select

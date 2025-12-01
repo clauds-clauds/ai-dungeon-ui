@@ -40,8 +40,7 @@
   }
 
   .dui-note-important {
-    color: var(--dui-color-blue);
-    font-weight: bold;
+    color: var(--dui-color-orange);
     font-size: var(--dui-font-size-bravo);
   }
 </style>

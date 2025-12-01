@@ -6,17 +6,46 @@
 
 <Foldout icon="mode_off_on" label="Features" description="Customize which features should be enabled!">
   <Group label="Formatter Enabled">
-    <Note description="Toggle whether to apply pseudo-Markdown formatting to responses.">
+    <Note
+      description="Toggle whether to apply some pretty text formatting."
+      important="Rules can be configured under the RegEx foldout!"
+    >
       <Toggle bind:checked={$settings.formatterEnabled} />
     </Note>
   </Group>
 
   <Group label="Traveller Enabled">
-    <Note description="Toggle whether the traveller feature is enabled, showing graphics above actions based on triggers.">
+    <Note description="Toggle whether graphics should be shown based on action triggers.">
       <Toggle bind:checked={$settings.travellerEnabled} />
     </Note>
   </Group>
+
+  <Group label="Image Generation Enabled">
+    <Note description="Toggle image generation." important="Requires an OpenRouter API Key!">
+      <Toggle bind:checked={$settings.generationEnabled} />
+    </Note>
+  </Group>
 </Foldout>
+
+{#if $settings.formatterEnabled}
+  <Foldout icon="regular_expression" label="RegEx">
+    <Group label="Bold Formatting">
+      <TextField bind:value={$settings.ruleBold} />
+    </Group>
+
+    <Group label="Italic Formatting">
+      <TextField bind:value={$settings.ruleItalic} />
+    </Group>
+
+    <Group label="Underline Formatting">
+      <TextField bind:value={$settings.ruleUnderline} />
+    </Group>
+
+    <Group label="Strikethrough Formatting">
+      <TextField bind:value={$settings.ruleStrikethrough} />
+    </Group>
+  </Foldout>
+{/if}
 
 <Foldout icon="ar_stickers" label="Icons" description="Customize icons and their borders!">
   <Group label="Icon Size (pixels)">

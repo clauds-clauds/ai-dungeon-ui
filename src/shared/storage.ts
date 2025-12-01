@@ -33,6 +33,12 @@ const defaultSettings = {
   borderColor: "#f8ae2c",
   paintLimit: 4,
   paintPerformanceMode: true,
+  ruleBold: "\\*\\*(.*?)\\*\\*",
+  ruleItalic: "\\*(.*?)\\*",
+  ruleUnderline: "__(.*?)__",
+  ruleStrikethrough: "~~(.*?)~~",
+  generationEnabled: false,
+  generationApiKey: "",
 };
 
 // Export the default settings so they can be used.

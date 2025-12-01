@@ -140,7 +140,7 @@ export class DUIDom {
     for (const response of responses) {
       if (response.hasAttribute(Config.ATTRIBUTE_RESPONSE_PRETTIFIED)) continue;
       const actionResponse = response.querySelector(Storage.readSettings().responseActionId);
-      if (actionResponse && !lastOnly) {
+      if (actionResponse) {
         if ((lastOnly && extensionState.loadFinished) || !lastOnly) {
           this.injectResponse(actionResponse as HTMLElement, ResponseType.Action);
         }
@@ -150,7 +150,7 @@ export class DUIDom {
         const type = label && label.startsWith("Last action:") ? ResponseType.Last : ResponseType.Other;
 
         // Format the story and last action types.
-        if (type === ResponseType.Last || !lastOnly) {
+        if (type === ResponseType.Last || !lastOnly || (lastOnly && extensionState.loadFinished)) {
           this.injectResponse(response, type);
           extensionState.loadFinished = true;
         }

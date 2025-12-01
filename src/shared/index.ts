@@ -51,3 +51,4 @@ export { default as PrettyEditor } from "../components/pretty/PrettyEditor.svelt
 export { default as PrettyElement } from "../components/pretty/PrettyElement.svelte";
 export { default as PrettyPanel } from "../components/pretty/PrettyPanel.svelte";
 export { default as PrettyResponse } from "../components/pretty/PrettyResponse.svelte";
+export { default as PrettyTraveller } from "../components/pretty/PrettyTraveller.svelte";
