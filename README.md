@@ -33,7 +33,7 @@
 
 ### Major New Features:
 
-1. `Traveller:` a new system which tracks which locations you go through, showcasing the graphics for them plus playing _optional_ ambient sound effects.
+1. `Traveller:` a new system which tracks which locations you go through, showcasing the graphics for them.
 
 2. `Image Generation:` generate and prompts images directly from within the editor! No longer do you have to scour the internet, draw your own, or resort to other _legal_ measures. You can now simply prompt what you want to see and instantly load it as a graphic.
 

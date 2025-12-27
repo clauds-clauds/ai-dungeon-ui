@@ -7,7 +7,7 @@ import { Events } from "./events";
 import "@/theme.css";
 
 class Snooze {
-  static wake() {
+  static async wake() {
     // Log some debugging information.
     Log.info("DungeonUI is starting!");
     Log.info("Adventure ID: " + Utils.getAdventureId());
@@ -17,7 +17,7 @@ class Snooze {
     DOM.addIcons();
 
     // Setup storage.
-    Storage.load();
+    await Storage.load();
     Storage.listen();
 
     // Add the dev panel to the DOM.
